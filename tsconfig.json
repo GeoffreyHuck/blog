@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "/build/",
+    "sourceMap": true,
+    //"noImplicitAny": true,
+    "module": "commonjs",
+    "target": "ES3",
+    //"strict": true,
+    "esModuleInterop": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "vendor",
+    "assets"
+  ],
+  "$schema": "https://json.schemastore.org/tsconfig"
+}
