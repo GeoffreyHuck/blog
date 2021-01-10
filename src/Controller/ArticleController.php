@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Manager\ArticleManager;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,12 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/test")
+     * @Route("/{url<[a-zA-Z0-9-_ ]+>}", name="article_show")
+     *
+     * @param string         $url            The article url.
+     * @param ArticleManager $articleManager The article manager.
      *
      * @return Response
      */
-    public function articleAction(): Response
+    public function articleAction(string $url, ArticleManager $articleManager): Response
     {
-        return $this->render('app/articles/article.html.twig');
+        try {
+            $article = $articleManager->get($url);
+        } catch (Exception $e) {
+            throw $this->createNotFoundException($e);
+        }
+
+        return $this->render('app/articles/article.html.twig', [
+            'article' => $article,
+        ]);
     }
 }

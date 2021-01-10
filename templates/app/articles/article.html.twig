@@ -1,50 +1,11 @@
 {% extends 'app/base.html.twig' %}
 
-{% block title %}Article - Geoffrey Huck{% endblock %}
+{% block title %}{{ article.title}} - Geoffrey Huck{% endblock %}
 
 {% block content %}
-    <div id="header">
-        <h1>My Diabolical Mathematical Opus</h1>
-        <div class="details">
-            <span id="author" class="author">Jamie Moriarty</span><br>
-        </div>
-    </div>
-    <div id="content">
-        <div id="preamble">
-            <div class="sectionbody">
-                <div class="paragraph">
-                    <p>Don&#8217;t worry about gumberoos or splintercats.
-                        Something far more fearsome plagues the days, nights, and inbetweens.
-                        Wolpertingers.</p>
-                </div>
-                <div class="paragraph">
-                    <p>A matrix can be written as \$[[a,b],[c,d]]((n),(k))\$.</p>
-                </div>
-                <div class="paragraph">
-                    <p>\(C = \alpha + \beta Y^{\gamma} + \epsilon\)</p>
-                </div>
-                <div class="paragraph">
-                    <p>\$sqrt(4) = 2\$</p>
-                </div>
-                <div class="paragraph">
-                    <p>Water (\$H_2O\$) is a critical component.</p>
-                </div>
-            </div>
-        </div>
-        <div class="sect1">
-            <h2 id="_origins">Origins</h2>
-            <div class="sectionbody">
-                <div class="paragraph">
-                    <p>Wolpertingers are <a href="https://en.wikipedia.org/wiki/Wolpertinger">ravenous beasts</a>.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="footer">
-        <div id="footer-text">
-            Last updated 2021-01-09 21:33:03 +0100
-        </div>
-    </div>
+    Publié le {{ article.publishedDate | date('d/m/Y') }}
+
+    {{ article.content | raw }}
 {% endblock %}
 
 {% block javascripts %}
