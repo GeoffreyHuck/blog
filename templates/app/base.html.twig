@@ -5,19 +5,47 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Geoffrey Huck">
-        <title>>{% block title %}Geoffrey Huck - Blog{% endblock %}</title>
+        <title>{% block title %}Geoffrey Huck{% endblock %}</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
         {{ encore_entry_link_tags('app') }}
     </head>
     <body>
         <nav>
-            <a href="{{ path('homepage') }}">Geoffrey Huck</a>
+            <div class="ban header">
+                <div class="catch">
+                    Learn,<br />
+                    Compute,<br />
+                    Think,
+                </div>
+                <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
+                <div class="clearfix"></div>
+            </div>
+
+            <ul class="main-menu">
+                <li>
+                    <a href="{{ path('category_show', { url: 'deep-learning' }) }}">
+                        Deep Learning
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('article_show', { url: 'about-me' }) }}">
+                        About Me
+                    </a>
+                </li>
+            </ul>
         </nav>
 
         {% block content %}
 
         {% endblock %}
 
+        <footer>
+            <div class="ban copyright-bar">
+                Copyright © {{ 'now' | date('Y') }}
+            </div>
+        </footer>
 
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}

@@ -3,9 +3,20 @@
 {% block title %}{{ article.title}} - Geoffrey Huck{% endblock %}
 
 {% block content %}
-    Publié le {{ article.publishedDate | date('d/m/Y') }}
+    <article>
+        <h1>{{ article.title }}</h1>
+        Published on {{ article.publishedDate | date('d/m/Y') }}
 
-    {{ article.content | raw }}
+        <hr />
+
+        {{ article.content | raw }}
+    </article>
+
+    <hr />
+    <div class="stay-in-touch">
+        <p>Let's stay in touch ?</p>
+    </div>
+    <hr />
 {% endblock %}
 
 {% block javascripts %}

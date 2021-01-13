@@ -1,9 +1,9 @@
 {% extends 'app/base.html.twig' %}
 
-{% block title %}Geoffrey Huck - Learn, compute, think{% endblock %}
+{% block title %}{{ name }} - Geoffrey Huck{% endblock %}
 
 {% block content %}
-    <h1>Homepage, baby !</h1>
+    <h1>{{ name }}</h1>
 
     {% for articlePreview in articlePreviews %}
         <hr />

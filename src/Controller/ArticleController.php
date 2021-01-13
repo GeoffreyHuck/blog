@@ -20,7 +20,7 @@ class ArticleController extends AbstractController
      *
      * @return Response
      */
-    public function articleAction(string $url, ArticleManager $articleManager): Response
+    public function showAction(string $url, ArticleManager $articleManager): Response
     {
         try {
             $article = $articleManager->get($url);
@@ -28,7 +28,7 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException($e);
         }
 
-        return $this->render('app/articles/article.html.twig', [
+        return $this->render('app/article/show.html.twig', [
             'article' => $article,
         ]);
     }

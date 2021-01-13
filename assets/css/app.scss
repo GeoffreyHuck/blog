@@ -1,0 +1,61 @@
+@import "variables";
+
+.ban {
+  background-image: url('../images/ban.jpg');
+}
+
+hr {
+  display: block;
+  border: 0;
+  height: 3px;
+  background-image: url('../images/ban.jpg');
+}
+
+.header {
+  padding: 10px 10px 10px 0;
+
+  .catch {
+    float: right;
+    color: $color-black;
+  }
+
+  .site-name {
+    display: inline-block;
+    margin-top: 8px;
+    color: $color-black;
+    background-color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px $color-white;
+    font-size: 28px;
+  }
+}
+
+ul.main-menu {
+  margin: 0;
+  list-style: none;
+  background-color: $color-black;
+  display: flex;
+
+  li {
+    padding: 5px;
+  }
+
+  a {
+    color: $color-white;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+footer {
+  .copyright-bar {
+    padding: 5px 0;
+    font-size: 0.9em;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 768px) {
+
+}

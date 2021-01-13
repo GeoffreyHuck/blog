@@ -18,6 +18,11 @@ class Article
     /**
      * @var string
      */
+    private $category;
+
+    /**
+     * @var string
+     */
     private $url;
 
     /**
@@ -55,6 +60,18 @@ class Article
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
