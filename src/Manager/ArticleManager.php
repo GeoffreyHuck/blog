@@ -144,8 +144,10 @@ class ArticleManager
 
         // Transform the adoc into html.
         $adocPath = $this->articleBasePath . $name . '/index.adoc';
+        $adocDir = $this->articleBasePath . $name . '/';
 
-        $cmd = 'asciidoctor --a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
+        $cmd = 'asciidoctor -r asciidoctor-diagram -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
+        echo $cmd . "\n";
         shell_exec($cmd);
 
         // Copy the resources into public directory.

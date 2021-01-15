@@ -8,14 +8,11 @@ Build for production :
 
     yarn encore prod
 
-Install asciidoctor :
+Install asciidoctor and asciidoctor-diagram :
 
     sudo apt install asciidoctor
+    sudo gem gem install asciidoctor-diagram
 
-To convert a document to HTML (with <html>, <body>, css and javascript included) :
+To build a document :
 
-    asciidoctor -D ../build my-document.adoc
-
-To obtain only the content in HTML :
-
-    asciidoctor -s -D ../build my-document.adoc
+    symfony console app:build-article
