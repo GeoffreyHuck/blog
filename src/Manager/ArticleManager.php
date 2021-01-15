@@ -2,6 +2,7 @@
 namespace App\Manager;
 
 use App\Model\Article;
+use App\Service\Watermark;
 use DateTime;
 use DOMDocument;
 use Exception;
@@ -11,6 +12,19 @@ class ArticleManager
 {
     private $articleBasePath = __DIR__ . '/../../articles/';
     private $publicArticleBasePath = __DIR__ . '/../../public/articles/';
+
+    /** @var Watermark */
+    private $watermark;
+
+    /**
+     * ArticleManager constructor.
+     *
+     * @param Watermark $watermark The watermark service.
+     */
+    public function __construct(Watermark $watermark)
+    {
+        $this->watermark = $watermark;
+    }
 
     /**
      * Get an article.
@@ -158,22 +172,31 @@ class ArticleManager
 
         /**
          * When the images extensions are in uppercase, they are copied.
-         * When they are in lowercase, a watermark is added by php.
+         * When they are in lowercase, a watermark is added on it.
          */
         $validExtensions = ['.mp3', '.mp4', '.JPG', '.PNG', '.JPEG'];
+        $watermarkExtensions = ['.jpg', '.jpeg', '.png'];
         $files = scandir($this->articleBasePath . $name);
         foreach ($files as $file) {
-            $isValid = false;
+            $fileArticlePath = $this->articleBasePath . $name . '/' . $file;
+            $filePublicPath = $publicArticleDirectory . '/' . $file;
+
+            // Copy assets.
             foreach ($validExtensions as $validExtension) {
                 if (substr_compare($file, $validExtension, -strlen($validExtension)) === 0) {
-                    $isValid = true;
+                    copy($fileArticlePath, $filePublicPath);
 
                     break;
                 }
             }
 
-            if ($isValid) {
-                copy($this->articleBasePath . $name . '/' . $file, $publicArticleDirectory . '/' . $file);
+            // Generate watermark.
+            foreach ($watermarkExtensions as $watermarkExtension) {
+                if (substr_compare($file, $watermarkExtension, -strlen($watermarkExtension)) === 0) {
+                    $this->watermark->generate($fileArticlePath, $filePublicPath);
+
+                    break;
+                }
             }
         }
 
