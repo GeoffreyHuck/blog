@@ -151,7 +151,12 @@ class ArticleManager
         shell_exec($cmd);
 
         // Copy the resources into public directory.
-        $validExtensions = ['.jpeg', '.jpg', '.png', '.mp3', '.mp4'];
+        $publicArticleDirectory = $this->publicArticleBasePath . $name;
+        if (!file_exists($publicArticleDirectory)) {
+            mkdir($publicArticleDirectory, 0755, true);
+        }
+
+        $validExtensions = ['.mp3', '.mp4'];
         $files = scandir($this->articleBasePath . $name);
         foreach ($files as $file) {
             $isValid = false;
@@ -164,12 +169,6 @@ class ArticleManager
             }
 
             if ($isValid) {
-                $publicArticleDirectory = $this->publicArticleBasePath . $name;
-
-                if (!file_exists($publicArticleDirectory)) {
-                    mkdir($publicArticleDirectory, 0755, true);
-                }
-
                 copy($this->articleBasePath . $name . '/' . $file, $publicArticleDirectory . '/' . $file);
             }
         }
