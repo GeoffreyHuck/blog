@@ -101,7 +101,7 @@ class ArticleController extends AbstractController
 
         $destinationFile = __DIR__ . '/../../public/articles/' . $url . '/' . $image;
 
-//        file_put_contents($destinationFile, $destinationImage);
+        file_put_contents($destinationFile, $destinationImage);
 
         imagedestroy($sourceImage);
         imagedestroy($imageWithWaterMark);
