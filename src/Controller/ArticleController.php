@@ -70,6 +70,14 @@ class ArticleController extends AbstractController
         $destinationHeight = $sourceHeight;
 
         $imageWithWaterMark = imagecreatetruecolor($destinationWidth, $destinationHeight);
+        if ($ext == 'png') {
+            $background = imagecolorallocate($imageWithWaterMark , 0, 0, 0);
+
+            imagecolortransparent($imageWithWaterMark, $background);
+            imagealphablending($imageWithWaterMark, false);
+            imagesavealpha($imageWithWaterMark, true);
+        }
+
         imagecopyresampled($imageWithWaterMark, $sourceImage, 0, 0, 0, 0, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight);
 
         // Add watermark.
@@ -93,7 +101,7 @@ class ArticleController extends AbstractController
 
         $destinationFile = __DIR__ . '/../../public/articles/' . $url . '/' . $image;
 
-        file_put_contents($destinationFile, $destinationImage);
+//        file_put_contents($destinationFile, $destinationImage);
 
         imagedestroy($sourceImage);
         imagedestroy($imageWithWaterMark);
