@@ -146,22 +146,26 @@ class ArticleManager
         $adocPath = $this->articleBasePath . $name . '/index.adoc';
         $adocDir = $this->articleBasePath . $name . '/';
 
-        $cmd = 'asciidoctor -r asciidoctor-diagram -r gnuplot -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
+        $cmd = 'asciidoctor -r asciidoctor-diagram -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
         echo $cmd . "\n";
         shell_exec($cmd);
 
         // Copy the resources into public directory.
         $publicArticleDirectory = $this->publicArticleBasePath . $name;
         if (!file_exists($publicArticleDirectory)) {
-            mkdir($publicArticleDirectory, 0755, true);
+            mkdir($publicArticleDirectory, 0777, true);
         }
 
-        $validExtensions = ['.mp3', '.mp4'];
+        /**
+         * When the images extensions are in uppercase, they are copied.
+         * When they are in lowercase, a watermark is added by php.
+         */
+        $validExtensions = ['.mp3', '.mp4', '.JPG', '.PNG', '.JPEG'];
         $files = scandir($this->articleBasePath . $name);
         foreach ($files as $file) {
             $isValid = false;
             foreach ($validExtensions as $validExtension) {
-                if (substr_compare(strtolower($file), $validExtension, -strlen($validExtension)) === 0) {
+                if (substr_compare($file, $validExtension, -strlen($validExtension)) === 0) {
                     $isValid = true;
 
                     break;
