@@ -146,7 +146,7 @@ class ArticleManager
         $adocPath = $this->articleBasePath . $name . '/index.adoc';
         $adocDir = $this->articleBasePath . $name . '/';
 
-        $cmd = 'asciidoctor -r asciidoctor-diagram -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
+        $cmd = 'asciidoctor -r asciidoctor-diagram -r gnuplot -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
         echo $cmd . "\n";
         shell_exec($cmd);
 

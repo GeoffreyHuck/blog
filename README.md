@@ -11,7 +11,8 @@ Build for production :
 Install asciidoctor and asciidoctor-diagram :
 
     sudo apt install asciidoctor
-    sudo gem gem install asciidoctor-diagram
+    sudo gem install asciidoctor-diagram
+    sudo apt install gnuplot
 
 To build a document :
 
