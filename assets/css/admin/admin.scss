@@ -1,0 +1,11 @@
+@import '../variables';
+
+ul.main-menu {
+  .logout {
+    color: $color-red;
+    text-decoration: underline;
+  }
+  .logout:hover {
+    text-decoration: none;
+  }
+}

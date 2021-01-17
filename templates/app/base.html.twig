@@ -9,6 +9,9 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
         {{ encore_entry_link_tags('app') }}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {{ encore_entry_link_tags('admin') }}
+        {% endif %}
     </head>
     <body>
         {% for type, messages in app.session.flashBag.all() %}
@@ -38,6 +41,11 @@
                         About Me
                     </a>
                 </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li>
+                        <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -51,7 +59,9 @@
             </div>
         </footer>
 
-        {{ encore_entry_script_tags('app') }}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {{ encore_entry_script_tags('admin') }}
+        {% endif %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

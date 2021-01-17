@@ -1,4 +1,4 @@
-window.onload = () => {
+window.addEventListener('load', () => {
     const commentReplyTo = document.getElementById('comment_replyTo');
     const replyToContainer = document.getElementById('reply-to-container');
 
@@ -9,4 +9,4 @@ window.onload = () => {
             replyToContainer.style.display = 'block';
         });
     });
-};
+});

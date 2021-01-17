@@ -1,9 +1,9 @@
-@import "fonts";
+@import "app/fonts";
 
 @import "lib/asciidoctor";
 
-@import "ui";
-@import "form";
-@import "app";
-@import "asciidoc";
-@import "mathjax";
+@import "app/ui";
+@import "app/form";
+@import "app/app";
+@import "app/asciidoc";
+@import "app/mathjax";

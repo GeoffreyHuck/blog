@@ -86,17 +86,32 @@ class CreateAdminCommand extends Command
             return Command::FAILURE;
         }
 
+        $adminRepo = $this->em->getRepository(Admin::class);
+        $admin = $adminRepo->findOneBy([
+            'email' => $email,
+        ]);
+        if ($admin) {
+            $io->info($email . ' is an existing admin, the password will be updated.');
+        } else {
+            $admin = new Admin();
+
+            $io->info($email . ' admin account will be created.');
+        }
+
         $passwordQuestion = new Question('Password ?');
         $passwordQuestion->setHidden(true);
 
         $plainPassword = $io->askQuestion($passwordQuestion);
 
         $encodedPassword = $encoder->encodePassword($plainPassword, null);
+        $io->info('Encoded password : ' . $encodedPassword);
 
-        $admin = new Admin();
         $admin->setEmail($email);
         $admin->setPassword($encodedPassword);
         $admin->setRoles(['ROLE_MEMBER', 'ROLE_SUPER_ADMIN']);
+
+        $this->em->persist($admin);
+        $this->em->flush();
 
         $io->writeln('Done');
 

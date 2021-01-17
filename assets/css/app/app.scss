@@ -1,7 +1,7 @@
-@import "variables";
+@import "../variables";
 
 .ban {
-  background-image: url('../images/ban.jpg');
+  background-image: url('../../images/ban.jpg');
 }
 
 .container {
@@ -12,7 +12,7 @@ hr {
   display: block;
   border: 0;
   height: 3px;
-  background-image: url('../images/ban.jpg');
+  background-image: url('../../images/ban.jpg');
 }
 
 .header {

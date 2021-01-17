@@ -1,4 +1,4 @@
 import '../css/index.scss';
 
-import './flash';
-import './comment';
+import './app/flash';
+import './app/comment';
