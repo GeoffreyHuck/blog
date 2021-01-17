@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
+use function Symfony\Component\String\s;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -80,6 +81,37 @@ class Comment implements RequestInfoInterface
     public function __construct()
     {
         $this->children = new ArrayCollection();
+    }
+
+    /**
+     * Get the possible statuses of this comment.
+     *
+     * @return string[]
+     */
+    public function getPossibleStatuses(): array
+    {
+        $statuses = [$this->status];
+
+        switch ($this->status) {
+            case self::STATUS_NEW:
+            case self::STATUS_VERIFIED:
+            case self::STATUS_NOTIFIED:
+                $statuses = array_merge($statuses, [self::STATUS_SPAM]);
+                break;
+
+            case self::STATUS_MANUAL:
+                $statuses = array_merge($statuses, [self::STATUS_VERIFIED, self::STATUS_SPAM]);
+                break;
+
+            case self::STATUS_SPAM:
+                $statuses = array_merge($statuses, [self::STATUS_VERIFIED, self::STATUS_NOTIFIED]);
+                break;
+
+            default:
+                break;
+        }
+
+        return array_unique($statuses);
     }
 
     public function getAnchor(): string

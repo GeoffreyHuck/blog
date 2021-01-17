@@ -4,7 +4,21 @@
 {% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />{% endblock %}
 
 {% macro displayComment(comment, nested = false) %}
-    <div class="comment {% if comment.status == constant('App\\Entity\\Comment::STATUS_MANUAL') %}comment-spam{% endif %}" id="{{ comment.anchor }}" {% if nested %}style="margin-left: 5px;"{% endif %}>
+    <div class="comment{% if is_granted('ROLE_SUPER_ADMIN') %} comment-status-{{ comment.status }}{% endif %}" id="{{ comment.anchor }}" {% if nested %}style="margin-left: 5px;"{% endif %}>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="float-right">
+                <form method="post" action="{{ path('article_update_status', { id: comment.id }) }}">
+                    <select name="status">
+                        {% for status in comment.getPossibleStatuses() %}
+                            <option {% if status == comment.status %}selected{% endif%} value="{{ status }}">{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn">
+                        Update
+                    </button>
+                </form>
+            </div>
+        {% endif %}
         <span class="author">{{ comment.author }}</span> on {{ comment.createdAt | date('d/m/Y H:i:s') }} :
         <br /><br />
         {{ comment.content | nl2br }}

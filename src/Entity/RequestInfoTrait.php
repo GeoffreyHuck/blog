@@ -38,7 +38,7 @@ trait RequestInfoTrait
         return $this->ip;
     }
 
-    public function setIp(?string $ip): self
+    public function setIp(?string $ip)
     {
         $this->ip = $ip;
 
@@ -50,7 +50,7 @@ trait RequestInfoTrait
         return $this->userAgent;
     }
 
-    public function setUserAgent(?string $userAgent): self
+    public function setUserAgent(?string $userAgent)
     {
         $this->userAgent = $userAgent;
 
@@ -62,7 +62,7 @@ trait RequestInfoTrait
         return $this->referer;
     }
 
-    public function setReferer(?string $referer): self
+    public function setReferer(?string $referer)
     {
         $this->referer = $referer;
 
@@ -74,7 +74,7 @@ trait RequestInfoTrait
         return $this->acceptLanguage;
     }
 
-    public function setAcceptLanguage(?string $acceptLanguage): self
+    public function setAcceptLanguage(?string $acceptLanguage)
     {
         $this->acceptLanguage = $acceptLanguage;
 

@@ -1,0 +1,12 @@
+@import '../variables';
+
+.comment-status-manual {
+  opacity: 0.7;
+  background-color: $color-light-yellow;
+  border: 2px dotted $color-red;
+}
+.comment-status-spam {
+  opacity: 0.2;
+  background-color: $color-light-yellow;
+  border: 2px dotted $color-red;
+}

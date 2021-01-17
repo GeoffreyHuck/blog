@@ -24,12 +24,12 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * Gets for an url.
      *
-     * @param string $url     The url.
-     * @param bool   $getSpam Whether to also get the spams.
+     * @param string $url      The url.
+     * @param array  $statuses The wanted statuses or empty for everything.
      *
      * @return Comment[]
      */
-    public function getForUrl(string $url, bool $getSpam = false): array
+    public function getForUrl(string $url, array $statuses = [Comment::STATUS_NEW, Comment::STATUS_NOTIFIED, Comment::STATUS_VERIFIED]): array
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c, cc')
@@ -38,9 +38,9 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('url', $url)
             ->orderBy('c.id', 'ASC');
 
-        if (!$getSpam) {
+        if (count($statuses)) {
             $qb->andWhere('c.status IN (:acceptedStatuses)')
-                ->setParameter('acceptedStatuses', [Comment::STATUS_NEW, Comment::STATUS_NOTIFIED, Comment::STATUS_VERIFIED]);
+                ->setParameter('acceptedStatuses', $statuses);
         }
 
         return $qb->getQuery()->getResult();
