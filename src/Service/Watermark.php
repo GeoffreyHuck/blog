@@ -48,7 +48,7 @@ class Watermark
         imagecopyresampled($imageWithWaterMark, $sourceImage, 0, 0, 0, 0, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight);
 
         // Add watermark.
-        $fontNotoSerif = __DIR__ . '/../../public/fonts/NotoSerif-Regular.ttf';
+        $fontNotoSerif = __DIR__ . '/../../assets/fonts/NotoSerif-Regular.ttf';
 
         $widthRatio = ($destinationWidth / 640);
         $fontSize = (10 * $widthRatio);

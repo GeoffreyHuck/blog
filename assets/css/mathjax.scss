@@ -1,8 +1,10 @@
+@import "variables";
+
 .stemblock > .content > .MathJax_Display > .MathJax {
   display: inline-block;
   padding: 5px;
   border: 1px solid #dedede;
   border-radius: 1px;
-  background-color: #fcfcfc;
+  background-color: $color-very-light-gray;
   box-shadow: 1px 1px 3px #999999;
 }

@@ -1,0 +1,10 @@
+Hello,
+<br /><br />
+{{ comment.author }} just posted a reply to the thread you already participated in and I thought you would be interested to read it.
+<br /><br />
+{% set url = 'https://geoffreyhuck.com' ~ comment.url ~ '#' ~ comment.anchor %}
+You can follow this direct link : <a target="_blank" href="{{ url }}">{{ url }}</a>
+<br /><br />
+Cheers,
+<br /><br />
+Geoffrey Huck's Bot

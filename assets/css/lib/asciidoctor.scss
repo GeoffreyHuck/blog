@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
 /* Uncomment @import statement to use as custom stylesheet */
 /*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
@@ -299,7 +301,7 @@ h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 {
   font-family: "Open Sans", "DejaVu Sans", sans-serif;
   font-weight: 300;
   font-style: normal;
-  color: #ba3925;
+  color: $color-red;
   text-rendering: optimizeLegibility;
   margin-top: 1em;
   margin-bottom: .5em;
@@ -939,7 +941,7 @@ p a > code:hover {
 }
 
 #content h1 > a.link, h2 > a.link, h3 > a.link, #toctitle > a.link, .sidebarblock > .content > .title > a.link, h4 > a.link, h5 > a.link, h6 > a.link {
-  color: #ba3925;
+  color: $color-red;
   text-decoration: none
 }
 

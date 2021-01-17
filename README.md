@@ -1,3 +1,12 @@
+Create the database :
+    
+    bin/console doctrine:schema:update --force
+Create an admin :
+
+    bin/console app:create:admin
+
+Install the javascript dependencies :
+
     yarn install
     
 For dev :
@@ -17,3 +26,7 @@ Install asciidoctor and asciidoctor-diagram :
 To build a document :
 
     symfony console app:build-article
+
+Crontab :
+    
+    * * * * * /path/to/symfony console verify:comments

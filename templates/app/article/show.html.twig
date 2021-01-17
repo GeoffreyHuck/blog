@@ -2,20 +2,77 @@
 
 {% block title %}{{ article.title}} - Geoffrey Huck{% endblock %}
 
+{% macro displayComment(comment, nested = false) %}
+    <div class="comment" id="{{ comment.anchor }}" {% if nested %}style="margin-left: 5px;"{% endif %}>
+        <span class="author">{{ comment.author }}</span> on {{ comment.createdAt | date('d/m/Y H:i:s') }} :
+        <br /><br />
+        {{ comment.content | nl2br }}
+        <br /><br />
+        <a href="#comment" data-replyTo="{{ comment.author }} on {{ comment.createdAt | date('d/m/Y H:i:s') }}" class="reply-link">Reply</a>
+
+        {% if comment.children | length %}
+            <br /><br />
+            {% for child in comment.children %}
+                {{ _self.displayComment(child, true) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}
+
 {% block content %}
-    <article>
-        <h1>{{ article.title }}</h1>
-        Published on {{ article.publishedDate | date('d/m/Y') }}
+    <div class="container">
+        <article>
+            <h1>{{ article.title }}</h1>
+            Published on {{ article.publishedDate | date('d/m/Y') }}
 
-        <hr />
+            <hr />
 
-        {{ article.content | raw }}
-    </article>
+            {{ article.content | raw }}
+        </article>
+    </div>
 
     <hr />
-    <div class="stay-in-touch">
-        <p>Let's stay in touch ?</p>
+
+    {% if comments | length %}
+        <div class="container">
+            {% for comment in comments %}
+                {% if comment.parent is null %}
+                    {{ _self.displayComment(comment) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container" id="comment">
+        <h2>Leave a comment</h2>
+
+        <p>Your email will not appear on the website.</p>
+
+        <form method="post" action="#comment" novalidate>
+            {{ form_errors(formComment) }}
+
+            <div id="reply-to-container" style="display: none;">
+                {{ form_row(formComment.replyTo) }}
+            </div>
+            {{ form_row(formComment.content) }}
+            {{ form_row(formComment.author) }}
+            {{ form_row(formComment.email) }}
+
+            {{ form_rest(formComment) }}
+
+            <button class="btn" type="submit">
+                Let's post it !
+            </button>
+        </form>
     </div>
+
+    <hr />
+    <div class="container">
+        <div class="stay-in-touch">
+            <p>Let's stay in touch ?</p>
+        </div>
+    </div>
+
     <hr />
 {% endblock %}
 

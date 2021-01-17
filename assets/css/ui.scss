@@ -1,0 +1,19 @@
+@import "variables";
+
+.btn {
+  color: $color-white;
+  background-color: $color-black;
+  border: 0;
+  padding: 10px 15px;
+}
+
+.flash {
+  position: fixed;
+  width: 80%;
+  margin-left: 10%;
+  background-color: rgba(252, 254, 21, 0.7);
+  color: $color-dark-gray;
+  padding: 10px;
+  text-align: center;
+  z-index: 100;
+}

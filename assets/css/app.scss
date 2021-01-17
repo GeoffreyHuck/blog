@@ -4,6 +4,10 @@
   background-image: url('../images/ban.jpg');
 }
 
+.container {
+  padding: 10px;
+}
+
 hr {
   display: block;
   border: 0;
@@ -23,7 +27,7 @@ hr {
     display: inline-block;
     margin-top: 8px;
     color: $color-black;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(244, 213, 148, 0.5);
     text-shadow: 1px 1px $color-white;
     font-size: 28px;
   }
@@ -45,6 +49,24 @@ ul.main-menu {
   }
   a:hover {
     text-decoration: underline;
+  }
+}
+
+.comment {
+  background-color: $color-semi-light-gray;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid $color-red;
+
+  .author {
+    color: $color-red;
+  }
+
+  .reply-link {
+
+  }
+  .reply-link:hover {
+    text-decoration: none;
   }
 }
 
