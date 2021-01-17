@@ -20,6 +20,9 @@ class Comment implements RequestInfoInterface
 
     const STATUS_NEW = 'new';
     const STATUS_NOTIFIED = 'notified';
+    const STATUS_SPAM = 'spam';
+    const STATUS_MANUAL = 'manual';
+    const STATUS_VERIFIED = 'verified';
 
     /**
      * @ORM\Id

@@ -1,0 +1,14 @@
+My friend,
+<br /><br />
+There is this comment you should verify :
+<br /><br />
+From {{ comment.author }} at {{ comment.createdAt | date('d/m/Y H:i:s') }}
+<br /><br />
+{{ comment.content | nl2br }}
+<br /><br />
+{% set url = site_url ~ comment.url ~ '?verify=1' ~ '#' ~ comment.anchor %}
+You can follow this direct link : <a target="_blank" href="{{ url }}">{{ url }}</a>
+<br /><br />
+Cheers,
+<br /><br />
+Geoffrey Huck's Bot

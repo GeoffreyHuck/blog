@@ -1,6 +1,7 @@
 {% extends 'app/base.html.twig' %}
 
 {% block title %}{{ name }} - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('category_show', { url: url }) }}" />{% endblock %}
 
 {% block content %}
     <h1>{{ name }}</h1>

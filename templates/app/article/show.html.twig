@@ -1,9 +1,10 @@
 {% extends 'app/base.html.twig' %}
 
 {% block title %}{{ article.title}} - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />{% endblock %}
 
 {% macro displayComment(comment, nested = false) %}
-    <div class="comment" id="{{ comment.anchor }}" {% if nested %}style="margin-left: 5px;"{% endif %}>
+    <div class="comment {% if comment.status == constant('App\\Entity\\Comment::STATUS_MANUAL') %}comment-spam{% endif %}" id="{{ comment.anchor }}" {% if nested %}style="margin-left: 5px;"{% endif %}>
         <span class="author">{{ comment.author }}</span> on {{ comment.createdAt | date('d/m/Y H:i:s') }} :
         <br /><br />
         {{ comment.content | nl2br }}
@@ -41,30 +42,34 @@
                 {% endif %}
             {% endfor %}
         </div>
+
+        <hr />
     {% endif %}
 
-    <div class="container" id="comment">
-        <h2>Leave a comment</h2>
+    {% if formComment %}
+        <div class="container" id="comment">
+            <h2>Leave a comment</h2>
 
-        <p>Your email will not appear on the website.</p>
+            <p>Your email will not appear on the website.</p>
 
-        <form method="post" action="#comment" novalidate>
-            {{ form_errors(formComment) }}
+            <form method="post" action="#comment" novalidate>
+                {{ form_errors(formComment) }}
 
-            <div id="reply-to-container" style="display: none;">
-                {{ form_row(formComment.replyTo) }}
-            </div>
-            {{ form_row(formComment.content) }}
-            {{ form_row(formComment.author) }}
-            {{ form_row(formComment.email) }}
+                <div id="reply-to-container" style="display: none;">
+                    {{ form_row(formComment.replyTo) }}
+                </div>
+                {{ form_row(formComment.content) }}
+                {{ form_row(formComment.author) }}
+                {{ form_row(formComment.email) }}
 
-            {{ form_rest(formComment) }}
+                {{ form_rest(formComment) }}
 
-            <button class="btn" type="submit">
-                Let's post it !
-            </button>
-        </form>
-    </div>
+                <button class="btn" type="submit">
+                    Let's post it !
+                </button>
+            </form>
+        </div>
+    {% endif %}
 
     <hr />
     <div class="container">

@@ -3,7 +3,9 @@ namespace App\Command;
 
 use App\Entity\Comment;
 use App\Manager\CommentManager;
+use App\Service\Akismet;
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
@@ -19,15 +21,14 @@ class VerifyCommentsCommand extends Command
 
     protected static $defaultName = 'app:verify:comments';
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** * @var EntityManagerInterface */
     private $em;
 
-    /**
-     * @var CommentManager
-     */
+    /** @var CommentManager */
     private $commentManager;
+
+    /** @var Akismet */
+    private $akismet;
 
     /** @var MailerInterface */
     private $mailer;
@@ -37,14 +38,16 @@ class VerifyCommentsCommand extends Command
      *
      * @param EntityManagerInterface $em             The entity manager.
      * @param CommentManager         $commentManager The comment manager.
+     * @param Akismet                $akismet        The akismet service.
      * @param MailerInterface        $mailer         The mailer.
      */
-    public function __construct(EntityManagerInterface $em, CommentManager $commentManager, MailerInterface $mailer)
+    public function __construct(EntityManagerInterface $em, CommentManager $commentManager, Akismet $akismet, MailerInterface $mailer)
     {
         parent::__construct();
 
         $this->em = $em;
         $this->commentManager = $commentManager;
+        $this->akismet = $akismet;
         $this->mailer = $mailer;
     }
 
@@ -64,16 +67,55 @@ class VerifyCommentsCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $commentRepo = $this->em->getRepository(Comment::class);
-        $comments = $commentRepo->findBy([
+        $newComments = $commentRepo->findBy([
             'status' => Comment::STATUS_NEW,
         ]);
 
-        $io->writeln('Found ' . count($comments) . ' comments.');
+        $io->writeln('Found ' . count($newComments) . ' new comments.');
 
-        foreach ($comments as $comment) {
-            $io->writeln('Comment from ' . $comment->getAuthor() . ' at ' . $comment->getCreatedAt()->format('d/m/Y H:i:s'));
+        foreach ($newComments as $newComment) {
+            $io->writeln('Comment from ' . $newComment->getAuthor() . ' at ' . $newComment->getCreatedAt()->format('d/m/Y H:i:s'));
 
-            $emails = $this->commentManager->getEmailsToNotifyForPostingComment($comment);
+            $spamScore = $this->akismet->getSpamScore($newComment);
+            if ($spamScore == Akismet::BLATANT_SPAM) {
+                $io->writeln('Blatant spam.');
+
+                $newComment->setStatus(Comment::STATUS_SPAM);
+            } elseif ($spamScore == Akismet::MAYBE_SPAM) {
+                $io->writeln('Maybe spam : verify manually.');
+
+                $email = (new TemplatedEmail())
+                    ->from(new Address('blog@geoffreyhuck.com', 'Geoffrey Huck Blog'))
+                    ->to('geoffrey@geot.fr')
+                    ->subject('Comment to verify')
+                    ->htmlTemplate('emails/verify_comment.html.twig')
+                    ->context([
+                        'comment' => $newComment,
+                    ]);
+
+                $this->mailer->send($email);
+
+                $newComment->setStatus(Comment::STATUS_MANUAL);
+            } else {
+                $io->writeln('Verified.');
+
+                $newComment->setStatus(Comment::STATUS_VERIFIED);
+            }
+
+            $this->em->persist($newComment);
+            $this->em->flush();
+        }
+
+        $verifiedComments = $commentRepo->findBy([
+            'status' => Comment::STATUS_VERIFIED,
+        ]);
+
+        $io->writeln('Found ' . count($verifiedComments) . ' verified comments.');
+
+        foreach ($verifiedComments as $verifiedComment) {
+            $io->writeln('Comment from ' . $verifiedComment->getAuthor() . ' at ' . $verifiedComment->getCreatedAt()->format('d/m/Y H:i:s'));
+
+            $emails = $this->commentManager->getEmailsToNotifyForPostingComment($verifiedComment);
 
             $io->writeln('Send emails to : ' . implode(', ', $emails));
 
@@ -84,15 +126,15 @@ class VerifyCommentsCommand extends Command
                     ->subject('Things are getting hot since your last comment !')
                     ->htmlTemplate('emails/notify_comment.html.twig')
                     ->context([
-                        'comment' => $comment,
+                        'comment' => $verifiedComment,
                     ]);
 
                 $this->mailer->send($email);
             }
 
-            $comment->setStatus(Comment::STATUS_NOTIFIED);
+            $verifiedComment->setStatus(Comment::STATUS_NOTIFIED);
 
-            $this->em->persist($comment);
+            $this->em->persist($verifiedComment);
             $this->em->flush();
         }
 

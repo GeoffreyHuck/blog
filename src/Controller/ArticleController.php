@@ -33,13 +33,25 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException($e);
         }
 
-        $commentHandler->setUrl($request->getRequestUri());
-        if ($commentHandler->processRequest($request)) {
-            return $this->redirect($request->getRequestUri());
+        $articleUrl = $this->generateUrl('article_show', [
+            'url' => $url,
+        ]);
+
+        if ($article->getCategory()) {
+            $commentHandler->setUrl($articleUrl);
+            if ($commentHandler->processRequest($request)) {
+                return $this->redirect($request->getRequestUri());
+            }
         }
 
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
-        $comments = $commentRepo->getForUrl($request->getRequestUri());
+
+        $getSpam = false;
+        if ($this->isGranted('ROLE_SUPER_ADMIN') && $request->query->get('verify', false)) {
+            $getSpam = true;
+        }
+
+        $comments = $commentRepo->getForUrl($articleUrl, $getSpam);
 
         return $this->render('app/article/show.html.twig', array_merge([
             'article' => $article,
