@@ -67,7 +67,6 @@ class Akismet
                 'permalink' => $comment->getUrl(),
                 'blog_lang' => 'en',
                 'blog_charset' => 'UTF-8',
-                'is_test' => true,
             ],
         ]);
 
