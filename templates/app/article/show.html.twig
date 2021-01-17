@@ -86,9 +86,20 @@
     {% endif %}
 
     <hr />
-    <div class="container">
+    <div class="container" id="stay-in-touch">
         <div class="stay-in-touch">
-            <p>Let's stay in touch ?</p>
+            <p>You found the content interesting and want to stay in touch ?</p>
+            <form method="post" action="#stay-in-touch">
+                {{ form_errors(formSubscription) }}
+
+                {{ form_row(formSubscription.email) }}
+
+                {{ form_rest(formSubscription) }}
+
+                <button class="btn" type="submit">
+                    I subscribe !
+                </button>
+            </form>
         </div>
     </div>
 

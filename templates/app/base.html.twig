@@ -60,6 +60,7 @@
             </div>
         </footer>
 
+        {{ encore_entry_script_tags('app') }}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
             {{ encore_entry_script_tags('admin') }}
         {% endif %}

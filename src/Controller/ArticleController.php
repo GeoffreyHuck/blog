@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Handler\CommentHandler;
+use App\Handler\SubscriptionHandler;
 use App\Manager\ArticleManager;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,14 +20,20 @@ class ArticleController extends AbstractController
     /**
      * @Route("/{url<^[a-zA-Z0-9-_ ]+$>}", name="article_show")
      *
-     * @param Request        $request        The request.
-     * @param string         $url            The article url.
-     * @param ArticleManager $articleManager The article manager.
-     * @param CommentHandler $commentHandler The comment handler.
+     * @param Request             $request        The request.
+     * @param string              $url            The article url.
+     * @param ArticleManager      $articleManager The article manager.
+     * @param CommentHandler      $commentHandler The comment handler.
+     * @param SubscriptionHandler $commentHandler The subscription handler.
      *
      * @return Response
      */
-    public function showAction(Request $request, string $url, ArticleManager $articleManager, CommentHandler $commentHandler): Response
+    public function showAction(
+        Request $request,
+        string $url,
+        ArticleManager $articleManager,
+        CommentHandler $commentHandler,
+        SubscriptionHandler $subscriptionHandler): Response
     {
         try {
             $article = $articleManager->get($url);
@@ -45,6 +52,10 @@ class ArticleController extends AbstractController
             }
         }
 
+        if ($subscriptionHandler->processRequest($request)) {
+            return $this->redirect($request->getRequestUri());
+        }
+
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
 
         $commentStatuses = [Comment::STATUS_NEW, Comment::STATUS_NOTIFIED, Comment::STATUS_VERIFIED];
@@ -61,7 +72,8 @@ class ArticleController extends AbstractController
         return $this->render('app/article/show.html.twig', array_merge([
             'article' => $article,
             'comments' => $comments,
-        ], $commentHandler->getViewParameters()));
+        ], $commentHandler->getViewParameters(),
+            $subscriptionHandler->getViewParameters()));
     }
 
     /**
