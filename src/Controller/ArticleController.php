@@ -50,10 +50,10 @@ class ArticleController extends AbstractController
             if ($commentHandler->processRequest($request)) {
                 return $this->redirect($request->getRequestUri());
             }
-        }
 
-        if ($subscriptionHandler->processRequest($request)) {
-            return $this->redirect($request->getRequestUri());
+            if ($subscriptionHandler->processRequest($request)) {
+                return $this->redirect($request->getRequestUri());
+            }
         }
 
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
