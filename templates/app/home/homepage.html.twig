@@ -4,18 +4,20 @@
 {% block canonical %}<link rel="canonical" href="{{ site_url }}" />{% endblock %}
 
 {% block content %}
-    <h1>Homepage, baby !</h1>
+    <div class="container">
+        <h1>Homepage, baby !</h1>
 
-    {% for articlePreview in articlePreviews %}
-        <hr />
+        {% for articlePreview in articlePreviews %}
+            <hr />
 
-        <h2>{{ articlePreview.title }}</h2>
-        <span>Published on {{ articlePreview.publishedDate | date('d/m/Y') }}</span>
-        <br /><br />
+            <h2>{{ articlePreview.title }}</h2>
+            <span>Published on {{ articlePreview.publishedDate | date('d/m/Y') }}</span>
+            <br /><br />
 
-        {{ articlePreview.content | raw }}
-        <p>
-            <a href="{{ path('article_show', { url: articlePreview.url }) }}">Read more...</a>
-        </p>
-    {% endfor %}
+            {{ articlePreview.content | raw }}
+            <p>
+                <a href="{{ path('article_show', { url: articlePreview.url }) }}">Read more...</a>
+            </p>
+        {% endfor %}
+    </div>
 {% endblock %}
