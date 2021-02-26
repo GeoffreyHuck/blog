@@ -33,22 +33,25 @@ hr {
   }
 }
 
-ul.main-menu {
-  margin: 0;
-  list-style: none;
+.main-menu-container {
   background-color: $color-black;
-  display: flex;
 
-  li {
-    padding: 5px;
-  }
+  ul.main-menu {
+    margin: 0;
+    list-style: none;
+    display: flex;
 
-  a {
-    color: $color-white;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
+    li {
+      padding: 5px;
+    }
+
+    a {
+      color: $color-white;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -70,14 +73,14 @@ ul.main-menu {
   }
 }
 
+.centered {
+  text-align: center;
+}
+
 footer {
   .copyright-bar {
     padding: 5px 0;
     font-size: 0.9em;
     text-align: center;
   }
-}
-
-@media screen and (min-width: 768px) {
-
 }

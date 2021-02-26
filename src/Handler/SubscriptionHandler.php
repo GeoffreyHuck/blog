@@ -4,16 +4,23 @@ namespace App\Handler;
 use App\Entity\Subscription;
 use App\Form\SubscriptionType;
 use DateTime;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class SubscriptionHandler
 {
     use HandlerTrait;
 
-    public function __construct(ContainerInterface $container)
+    /** @var MailerInterface */
+    private $mailer;
+
+    public function __construct(ContainerInterface $container, MailerInterface $mailer)
     {
         $this->container = $container;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -43,6 +50,17 @@ class SubscriptionHandler
                     $em->persist($subscription);
 
                     $em->flush();
+
+                    $email = (new TemplatedEmail())
+                        ->from(new Address('blog@geoffreyhuck.com', 'Geoffrey Huck Blog'))
+                        ->to('geoffrey@geot.fr')
+                        ->subject('Newsletter subscription !')
+                        ->htmlTemplate('emails/newsletter_subscription.html.twig')
+                        ->context([
+                            'subscription' => $subscription,
+                        ]);
+
+                    $this->mailer->send($email);
                 }
 
                 $this->addFlash('success', 'You are now subscribed ! Thank you !');

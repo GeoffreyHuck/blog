@@ -22,32 +22,36 @@
         {% endfor %}
         <nav>
             <div class="ban header">
-                <div class="catch">
-                    Learn,<br />
-                    Compute,<br />
-                    Think,
+                <div class="header-content">
+                    <div class="catch">
+                        Learn,<br />
+                        Compute,<br />
+                        Think,
+                    </div>
+                    <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
+                    <div class="clearfix"></div>
                 </div>
-                <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
-                <div class="clearfix"></div>
             </div>
 
-            <ul class="main-menu">
-                <li>
-                    <a href="{{ path('category_show', { url: 'deep-learning' }) }}">
-                        Deep Learning
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('article_show', { url: 'about-me' }) }}">
-                        About Me
-                    </a>
-                </li>
-                {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <div class="main-menu-container">
+                <ul class="main-menu">
                     <li>
-                        <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
+                        <a href="{{ path('category_show', { url: 'deep-learning' }) }}">
+                            Deep Learning
+                        </a>
                     </li>
-                {% endif %}
-            </ul>
+                    <li>
+                        <a href="{{ path('article_show', { url: 'about-me' }) }}">
+                            About Me
+                        </a>
+                    </li>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li>
+                            <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </nav>
 
         {% block content %}

@@ -38,7 +38,9 @@
     <div class="container">
         <article>
             <h1>{{ article.title }}</h1>
-            Published on {{ article.publishedDate | date('d/m/Y') }}
+            {% if article.category %}
+                Published on {{ article.publishedDate | date('d/m/Y') }}
+            {% endif %}
 
             <hr />
 
@@ -60,45 +62,52 @@
     {% if formComment %}
         <hr />
         <div class="container" id="comment">
-            <h2>Leave a comment</h2>
+            <div class="centered">
+                <h2>Leave a comment</h2>
 
-            <p>Your email will not appear on the website.</p>
+                <p>Your email will not appear on the website.</p>
 
-            <form method="post" action="#comment" novalidate>
-                {{ form_errors(formComment) }}
+                <form method="post" action="#comment" novalidate>
+                    {{ form_errors(formComment) }}
 
-                <div id="reply-to-container" style="display: none;">
-                    {{ form_row(formComment.replyTo) }}
-                </div>
-                {{ form_row(formComment.content) }}
-                {{ form_row(formComment.author) }}
-                {{ form_row(formComment.email) }}
+                    <div id="reply-to-container" style="display: none;">
+                        {{ form_row(formComment.replyTo) }}
+                    </div>
+                    {{ form_row(formComment.content) }}
+                    {{ form_row(formComment.author) }}
+                    {{ form_row(formComment.email) }}
 
-                {{ form_rest(formComment) }}
+                    {{ form_rest(formComment) }}
 
-                <button class="btn" type="submit">
-                    Let's post it !
-                </button>
-            </form>
+                    <button class="btn" type="submit">
+                        Let's post it !
+                    </button>
+                </form>
+            </div>
         </div>
     {% endif %}
 
     {% if formSubscription %}
         <hr />
         <div class="container" id="stay-in-touch">
-            <div class="stay-in-touch">
-                <p>You found the content interesting and want to stay in touch ?</p>
-                <form method="post" action="#stay-in-touch">
-                    {{ form_errors(formSubscription) }}
+            <div class="centered">
+                <h2>Stayin' in touch</h2>
 
-                    {{ form_row(formSubscription.email) }}
+                <div class="stay-in-touch">
+                    <p>You found the content interesting and want to stay in touch ?</p>
+                    <form method="post" action="#stay-in-touch">
+                        {{ form_errors(formSubscription) }}
 
-                    {{ form_rest(formSubscription) }}
+                        {{ form_row(formSubscription.name) }}
+                        {{ form_row(formSubscription.email) }}
 
-                    <button class="btn" type="submit">
-                        I subscribe !
-                    </button>
-                </form>
+                        {{ form_rest(formSubscription) }}
+
+                        <button class="btn" type="submit">
+                            I subscribe !
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     {% endif %}
