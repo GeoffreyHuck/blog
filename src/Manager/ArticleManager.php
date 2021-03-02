@@ -1,9 +1,10 @@
 <?php
 namespace App\Manager;
 
-use App\Model\Article;
+use App\Entity\Article;
 use App\Service\Watermark;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Exception;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -13,108 +14,79 @@ class ArticleManager
     private $articleBasePath = __DIR__ . '/../../articles/';
     private $publicArticleBasePath = __DIR__ . '/../../public/articles/';
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
     /** @var Watermark */
     private $watermark;
 
     /**
      * ArticleManager constructor.
      *
-     * @param Watermark $watermark The watermark service.
+     * @param EntityManagerInterface $em        The entity manager.
+     * @param Watermark              $watermark The watermark service.
      */
-    public function __construct(Watermark $watermark)
+    public function __construct(EntityManagerInterface $em, Watermark $watermark)
     {
+        $this->em = $em;
         $this->watermark = $watermark;
     }
 
     /**
-     * Get an article.
+     * Load an article.
      *
-     * @param string  $name             The article name.
-     * @param boolean $allowUnpublished Whether to allow the retrieval of unpublished articles.
+     * @param string  $directory The article directory.
+     * @param Article $article   The article.
      *
-     * @return Article
      * @throws Exception
      */
-    public function get(string $name, $allowUnpublished = false): Article
+    private function load(string $directory, Article $article): void
     {
-        $article = new Article();
-        $article->setUrl($name);
+        $article->setDirectory($directory);
 
-        $json = $this->getMetadata($name);
-
-        if (!$json['title']) {
-            throw new Exception('Metadata should have a title.');
+        if (!$article->getUrl()) {
+            $article->setUrl($directory);
         }
-        $article->setTitle($json['title']);
-
-        if (isset($json['category'])) {
-            $article->setCategory($json['category']);
+        if (!$article->getTitle()) {
+            $article->setTitle($directory);
         }
 
-        if ($json['published_date']) {
-            $publishedDate = new DateTime($json['published_date']);
-            $article->setPublishedDate($publishedDate);
-        } elseif ($allowUnpublished) {
-            $article->setPublishedDate(null);
-        } else {
-            throw new Exception('The article is not published.');
+        if (!$article->getPublishedAt()) {
+            $article->setPublishedAt(null);
         }
 
-        $content = $this->getHtmlContent($name);
+        $content = $this->getHtmlContent($directory);
         $article->setContent($content);
 
-        return $article;
+        $preview = $this->generatePreview($content);
+        $article->setPreview($preview);
     }
 
     /**
-     * Get all articles.
+     * Synchronizes all articles from disk.
      *
-     * @param array $filters
-     * @param bool $allowUnpublished Whether to allow the return of unpublished articles.
-     *
-     * @return Article[]
      * @throws Exception
      */
-    public function getAllWithPreview($filters = [], $allowUnpublished = false): array
+    public function synchronizeAll(): void
     {
-        $rawArticles = $this->getRawArticles();
+        $articleRepo = $this->em->getRepository(Article::class);
 
-        $articles = [];
-        foreach ($rawArticles as $rawArticle) {
-            if (!$rawArticle['published_date'] && !$allowUnpublished) {
-                continue;
-            }
-            if (!isset($rawArticle['category'])) {
-                continue;
-            }
-            if (isset($filters['category'])) {
-                if (!isset($rawArticle['category'])) {
-                    continue;
-                }
-
-                $categoryUrl = strtolower($rawArticle['category']);
-                $categoryUrl = str_replace(' ', '-', $categoryUrl);
-                if ($filters['category'] != $categoryUrl) {
-                    continue;
-                }
+        $directoryNames = $this->getAllDirectoryNames();
+        foreach ($directoryNames as $directoryName) {
+            $article = $articleRepo->findOneBy([
+                'directory' => $directoryName,
+            ]);
+            if (!$article) {
+                $article = new Article();
             }
 
-            $article = new Article();
+            $this->load($directoryName, $article);
 
-            $article->setUrl($rawArticle['url']);
-            $article->setTitle($rawArticle['title']);
-            $article->setPublishedDate(new DateTime($rawArticle['published_date']));
-
-            if (isset($rawArticle['category'])) {
-                $article->setCategory($rawArticle['category']);
-            }
-
-            $article->setContent($rawArticle['preview']);
-
-            $articles[] = $article;
+            $this->em->persist($article);
+            $this->em->flush();
         }
-
-        return $articles;
     }
 
     /**
@@ -134,11 +106,6 @@ class ArticleManager
         $adocPath = $this->articleBasePath . $name . '/index.adoc';
         if (!file_exists($adocPath)) {
             throw new Exception($adocPath . ' doesn\'t exist or is empty.');
-        }
-
-        $metadata = $this->getMetadata($name);
-        if (!$metadata['title']) {
-            throw new Exception('The metadata JSON must contain a title entry');
         }
 
         return true;
@@ -199,31 +166,6 @@ class ArticleManager
                 }
             }
         }
-
-        // Update articles.json.
-        $articlesJsonPath = $this->articleBasePath . 'articles.json';
-
-        $rawJson = file_get_contents($articlesJsonPath);
-        $articles = json_decode($rawJson, true);
-        if (!$articles) {
-            $articles = [];
-        }
-        $articles = array_filter($articles, function($article) use ($name) {
-            if ($article['url'] == $name) {
-                return false;
-            }
-
-            return true;
-        });
-        $articles[] = array_merge($this->getMetadata($name), [
-            'url' => $name,
-            'preview' => $this->generatePreview($this->getHtmlContent($name)),
-        ]);
-        usort($articles, function($article1, $article2) {
-            return $article1['published_date'] < $article2['published_date'];
-        });
-
-        file_put_contents($articlesJsonPath, json_encode($articles));
     }
 
     /**
@@ -263,62 +205,6 @@ class ArticleManager
         }
 
         return '';
-    }
-
-    /**
-     * Get the metadata of an article.
-     *
-     * @param string $name The article name.
-     *
-     * @return array
-     * @throws Exception
-     */
-    private function getMetadata(string $name): array
-    {
-        $path = $this->articleBasePath . $name . '/metadata.json';
-
-        try {
-            $rawJson = file_get_contents($path);
-        } catch (Exception $e) {
-            $rawJson = false;
-        }
-        if (!$rawJson) {
-            throw new Exception($path . ' doesn\'t exist or is empty.');
-        }
-
-        $metadata = json_decode($rawJson, true);
-        if (!$metadata) {
-            throw new Exception($path . ' doesn\'t contain valid JSON.');
-        }
-
-        return $metadata;
-    }
-
-    /**
-     * Get all the raw articles.
-     *
-     * @return array
-     * @throws Exception
-     */
-    private function getRawArticles(): array
-    {
-        $path = $this->articleBasePath . '/articles.json';
-
-        try {
-            $rawJson = file_get_contents($path);
-        } catch (Exception $e) {
-            $rawJson = false;
-        }
-        if (!$rawJson) {
-            throw new Exception($path . ' doesn\'t exist or is empty.');
-        }
-
-        $rawArticles = json_decode($rawJson, true);
-        if (!$rawArticles) {
-            throw new Exception($path . ' doesn\'t contain valid JSON.');
-        }
-
-        return $rawArticles;
     }
 
     /**

@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Comment;
+use App\Form\ArticleType;
 use App\Handler\CommentHandler;
 use App\Handler\SubscriptionHandler;
 use App\Manager\ArticleManager;
@@ -18,34 +20,81 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/{url<^[a-zA-Z0-9-_ ]+$>}", name="article_show")
+     * @Route("/sync", name="article_sync")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
-     * @param Request             $request        The request.
-     * @param string              $url            The article url.
-     * @param ArticleManager      $articleManager The article manager.
-     * @param CommentHandler      $commentHandler The comment handler.
-     * @param SubscriptionHandler $commentHandler The subscription handler.
+     * @param ArticleManager $articleManager The article manager.
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function syncAction(ArticleManager $articleManager): Response
+    {
+        $articleManager->synchronizeAll();
+
+        $this->addFlash('success', 'The articles have been synchronized.');
+
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
+     * @Route("/edit/{url}", name="article_edit")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
+     *
+     * @param Request $request The request.
+     * @param Article $article The article.
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Article $article): Response
+    {
+        $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+
+                $em->persist($article);
+                $em->flush();
+
+                $this->addFlash('success', 'The article has been edited.');
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
+
+        return $this->render('app/article/edit.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article,
+        ]);
+    }
+
+    /**
+     * @Route("/{url}", name="article_show")
+     *
+     * @param Request             $request             The request.
+     * @param Article             $article             The article.
+     * @param CommentHandler      $commentHandler      The comment handler.
+     * @param SubscriptionHandler $subscriptionHandler The subscription handler.
      *
      * @return Response
      */
     public function showAction(
         Request $request,
-        string $url,
-        ArticleManager $articleManager,
+        Article $article,
         CommentHandler $commentHandler,
         SubscriptionHandler $subscriptionHandler): Response
     {
-        try {
-            $article = $articleManager->get($url);
-        } catch (Exception $e) {
-            throw $this->createNotFoundException($e);
+        if (!$article->getPublishedAt() && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+            throw $this->createNotFoundException('Not published');
         }
 
         $articleUrl = $this->generateUrl('article_show', [
-            'url' => $url,
+            'url' => $article->getUrl(),
         ]);
 
-        if ($article->getCategory()) {
+        if (count($article->getThemes()) > 0) {
             $commentHandler->setUrl($articleUrl);
             if ($commentHandler->processRequest($request)) {
                 return $this->redirect($request->getRequestUri());
@@ -72,8 +121,10 @@ class ArticleController extends AbstractController
         return $this->render('app/article/show.html.twig', array_merge([
             'article' => $article,
             'comments' => $comments,
-        ], $commentHandler->getViewParameters(),
-            $subscriptionHandler->getViewParameters()));
+        ], [
+            $commentHandler->getViewParameters(),
+            $subscriptionHandler->getViewParameters(),
+        ]));
     }
 
     /**

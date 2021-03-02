@@ -19,32 +19,26 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAll($filters = [], $isAdmin = false)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->leftJoin('a.themes', 't');
 
-    /*
-    public function findOneBySomeField($value): ?Article
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if (isset($filters['theme'])) {
+            $qb->andWhere('t.id = :themeId')
+                ->setParameter('themeId', $filters['theme']->getId());
+        }
+
+        if ($isAdmin) {
+            $qb->addOrderBy('CASE WHEN a.publishedAt IS NULL THEN 0 ELSE 1 END', 'ASC');
+        } else {
+            $qb->andWhere('t.id IS NOT NULL');
+            $qb->andWhere('a.publishedAt IS NOT NULL');
+        }
+
+        $qb->addOrderBy('a.publishedAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
     }
-    */
 }

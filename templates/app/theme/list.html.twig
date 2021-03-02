@@ -1,0 +1,43 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}Themes - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('theme_list') }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <a href="{{ path('theme_new') }}" class="btn float-right">
+            New theme
+        </a>
+
+        <h1>Themes</h1>
+
+        {% for theme in themes %}
+            <hr />
+
+            {% if theme.articles | length == 0 %}
+                <form method="post" action="{{ path('theme_delete', { url: theme.url }) }}" class="float-right">
+                    <button type="submit" class="btn">
+                        Delete theme
+                    </button>
+                </form>
+            {% endif %}
+            <a href="{{ path('theme_edit', { url: theme.url }) }}" class="btn float-right">
+                Edit theme
+            </a>
+            <h2>
+                <a href="{{ path('theme_show', { url: theme.url }) }}">{{ theme.name }}</a>
+            </h2>
+            <ul>
+                {% for article in theme.articles %}
+                    <li>
+                        <a href="{{ path('article_show', { url: article.url }) }}">{{ article.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+        {% if (themes | length) == 0 %}
+            No themes exists yet.
+        {% endif %}
+    </div>
+{% endblock %}

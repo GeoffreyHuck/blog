@@ -1,0 +1,23 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}{{ theme.name }} - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('theme_show', { url: theme.url }) }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ theme.name }}</h1>
+
+        {% for article in articles %}
+            <hr />
+
+            <h2>{{ article.title }}</h2>
+            <span>Published on {{ article.publishedDate | date('d/m/Y') }}</span>
+            <br /><br />
+
+            {{ article.preview | raw }}
+            <p>
+                <a href="{{ path('article_show', { url: article.url }) }}">Read more...</a>
+            </p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -36,10 +36,16 @@
 
 {% block content %}
     <div class="container">
-        <article>
+        <article class="{% if not article.publishedAt %}unpublished{% endif %}">
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
+                    Edit article
+                </a>
+            {% endif %}
+
             <h1>{{ article.title }}</h1>
-            {% if article.category %}
-                Published on {{ article.publishedDate | date('d/m/Y') }}
+            {% if article.themes | length > 0 and article.publishedAt %}
+                Published on {{ article.publishedAt | date('d/m/Y') }}
             {% endif %}
 
             <hr />
@@ -59,7 +65,7 @@
         </div>
     {% endif %}
 
-    {% if formComment %}
+    {% if formComment is defined %}
         <hr />
         <div class="container" id="comment">
             <div class="centered">
@@ -87,7 +93,7 @@
         </div>
     {% endif %}
 
-    {% if formSubscription %}
+    {% if formSubscription is defined %}
         <hr />
         <div class="container" id="stay-in-touch">
             <div class="centered">

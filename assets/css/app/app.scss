@@ -8,6 +8,15 @@
   padding: 10px;
 }
 
+h2 a {
+  color: $color-red;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-red;
+  }
+}
+
 hr {
   display: block;
   border: 0;
@@ -53,6 +62,10 @@ hr {
       text-decoration: underline;
     }
   }
+}
+
+.unpublished {
+  opacity: 0.3;
 }
 
 .comment {

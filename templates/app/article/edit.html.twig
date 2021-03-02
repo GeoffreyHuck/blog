@@ -1,0 +1,24 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}Edit {{ article.title}} - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('theme_edit', { url: article.url }) }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Edit article {{ article.title }}</h1>
+
+        <form method="post" novalidate>
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.url) }}
+            {{ form_row(form.publishedAt) }}
+
+            {{ form_rest(form) }}
+
+            <button class="btn" type="submit">
+                Edit this theme
+            </button>
+        </form>
+    </div>
+{% endblock %}

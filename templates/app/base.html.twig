@@ -36,7 +36,7 @@
             <div class="main-menu-container">
                 <ul class="main-menu">
                     <li>
-                        <a href="{{ path('category_show', { url: 'deep-learning' }) }}">
+                        <a href="{{ path('theme_show', { url: 'deep-learning' }) }}">
                             Deep Learning
                         </a>
                     </li>
@@ -46,6 +46,9 @@
                         </a>
                     </li>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li>
+                            <a href="{{ path('theme_list') }}" class="logout">Themes</a>
+                        </li>
                         <li>
                             <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
                         </li>

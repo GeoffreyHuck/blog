@@ -9,6 +9,17 @@
   background-color: $color-black;
   border: 0;
   padding: 10px 15px;
+
+  &:hover {
+    background-color: $color-dark-gray;
+  }
+}
+a.btn {
+  text-decoration: none;
+
+  &:hover {
+    color: $color-white;
+  }
 }
 
 .flash {

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Manager\ArticleManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +22,11 @@ class HomeController extends AbstractController
      */
     public function homepageAction(ArticleManager $articleManager): Response
     {
-        $articlePreviews = $articleManager->getAllWithPreview();
+        $articleRepo = $this->getDoctrine()->getRepository(Article::class);
+        $articles = $articleRepo->getAll([], $this->isGranted('ROLE_SUPER_ADMIN'));
 
         return $this->render('app/home/homepage.html.twig', [
-            'articlePreviews' => $articlePreviews,
+            'articles' => $articles,
         ]);
     }
 }
