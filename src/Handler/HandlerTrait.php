@@ -18,7 +18,7 @@ trait HandlerTrait
     private $container;
 
     /** @var Form */
-    private $form;
+    private $form = null;
 
     /**
      * Creates and returns a Form instance from the type of the form.

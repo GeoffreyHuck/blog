@@ -5,6 +5,7 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\ArticleType;
 use App\Handler\CommentHandler;
+use App\Handler\ContactHandler;
 use App\Handler\SubscriptionHandler;
 use App\Manager\ArticleManager;
 use Exception;
@@ -77,6 +78,7 @@ class ArticleController extends AbstractController
      * @param Article             $article             The article.
      * @param CommentHandler      $commentHandler      The comment handler.
      * @param SubscriptionHandler $subscriptionHandler The subscription handler.
+     * @param ContactHandler      $contactHandler      The contact handler.
      *
      * @return Response
      */
@@ -84,7 +86,8 @@ class ArticleController extends AbstractController
         Request $request,
         Article $article,
         CommentHandler $commentHandler,
-        SubscriptionHandler $subscriptionHandler): Response
+        SubscriptionHandler $subscriptionHandler,
+        ContactHandler $contactHandler): Response
     {
         if (!$article->getPublishedAt() && !$this->isGranted('ROLE_SUPER_ADMIN')) {
             throw $this->createNotFoundException('Not published');
@@ -101,6 +104,11 @@ class ArticleController extends AbstractController
             }
 
             if ($subscriptionHandler->processRequest($request)) {
+                return $this->redirect($request->getRequestUri());
+            }
+        }
+        if ($article->getUrl() == 'about-me') {
+            if ($contactHandler->processRequest($request)) {
                 return $this->redirect($request->getRequestUri());
             }
         }
@@ -121,10 +129,10 @@ class ArticleController extends AbstractController
         return $this->render('app/article/show.html.twig', array_merge([
             'article' => $article,
             'comments' => $comments,
-        ], [
-            $commentHandler->getViewParameters(),
+        ], $commentHandler->getViewParameters(),
             $subscriptionHandler->getViewParameters(),
-        ]));
+            $contactHandler->getViewParameters()
+        ));
     }
 
     /**

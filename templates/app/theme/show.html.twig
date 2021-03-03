@@ -10,8 +10,12 @@
         {% for article in articles %}
             <hr />
 
-            <h2>{{ article.title }}</h2>
-            <span>Published on {{ article.publishedDate | date('d/m/Y') }}</span>
+            <h2>
+                <a href="{{ path('article_show', { url: article.url }) }}">
+                    {{ article.title }}
+                </a>
+            </h2>
+            <span>Published on {{ article.publishedAt | date('d/m/Y') }}</span>
             <br /><br />
 
             {{ article.preview | raw }}

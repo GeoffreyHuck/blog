@@ -82,7 +82,7 @@ class CommentHandler
     public function getViewParameters(): array
     {
         return [
-            'formComment' => ($this->form ? $this->form->createView() : null),
+            'formComment' => ($this->form) ? $this->form->createView() : null,
         ];
     }
 }

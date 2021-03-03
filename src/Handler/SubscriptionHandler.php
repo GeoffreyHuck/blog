@@ -75,7 +75,7 @@ class SubscriptionHandler
     public function getViewParameters(): array
     {
         return [
-            'formSubscription' => ($this->form ? $this->form->createView() : null),
+            'formSubscription' => ($this->form) ? $this->form->createView() : null,
         ];
     }
 }
