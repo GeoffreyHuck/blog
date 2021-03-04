@@ -2,7 +2,9 @@
 
 {% block metas %}
     <meta property="og:title" content="{{ article.title }}" />
-    <meta property="og:image" content="{{ site_url }}{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" />
+    {% if article.themes | length > 0 %}
+        <meta property="og:image" content="{{ site_url }}{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" />
+    {% endif %}
     <meta property="og:description" content="{{ article.preview | striptags | trim }}" />
     <meta property="og:url" content="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />
 {% endblock %}
@@ -64,8 +66,11 @@
             {% endif %}
 
             <hr />
-            <img src="{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" alt="Alaska mountains" />
-            <br /><br />
+            
+            {% if article.themes | length > 0 %}
+                <img src="{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" alt="Alaska mountains" />
+                <br /><br />
+            {% endif %}
 
             {{ article.content | raw }}
         </article>
