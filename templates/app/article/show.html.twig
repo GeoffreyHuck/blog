@@ -1,5 +1,12 @@
 {% extends 'app/base.html.twig' %}
 
+{% block metas %}
+    <meta property="og:title" content="{{ article.title }}" />
+    <meta property="og:image" content="{{ site_url }}{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" />
+    <meta property="og:description" content="{{ article.preview | striptags | trim }}" />
+    <meta property="og:url" content="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />
+{% endblock %}
+
 {% block title %}{{ article.title}} - Geoffrey Huck{% endblock %}
 {% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />{% endblock %}
 
@@ -36,6 +43,14 @@
 
 {% block content %}
     <div class="container">
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <form method="post" action="{{ path('article_sync') }}" class="float-right">
+                <button type="submit" class="btn">
+                    Synchronize articles
+                </button>
+            </form>
+        {% endif %}
+
         <article class="{% if not article.publishedAt %}unpublished{% endif %}">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
@@ -49,6 +64,8 @@
             {% endif %}
 
             <hr />
+            <img src="{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" alt="Alaska mountains" />
+            <br /><br />
 
             {{ article.content | raw }}
         </article>

@@ -71,22 +71,34 @@ class ArticleManager
      */
     public function synchronizeAll(): void
     {
-        $articleRepo = $this->em->getRepository(Article::class);
 
         $directoryNames = $this->getAllDirectoryNames();
         foreach ($directoryNames as $directoryName) {
-            $article = $articleRepo->findOneBy([
-                'directory' => $directoryName,
-            ]);
-            if (!$article) {
-                $article = new Article();
-            }
-
-            $this->load($directoryName, $article);
-
-            $this->em->persist($article);
-            $this->em->flush();
+            $this->synchronize($directoryName);
         }
+    }
+
+    /**
+     * Synchronizes an article from the disk.
+     *
+     * @param string $directory The directory.
+     * @throws Exception
+     */
+    public function synchronize(string $directory): void
+    {
+        $articleRepo = $this->em->getRepository(Article::class);
+
+        $article = $articleRepo->findOneBy([
+            'directory' => $directory,
+        ]);
+        if (!$article) {
+            $article = new Article();
+        }
+
+        $this->load($directory, $article);
+
+        $this->em->persist($article);
+        $this->em->flush();
     }
 
     /**
