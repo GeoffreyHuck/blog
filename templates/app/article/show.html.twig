@@ -53,7 +53,7 @@
             </form>
         {% endif %}
 
-        <article class="unpublished">
+        <article class="{% if not article.publishedAt %}unpublished{% endif %}">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
                     Edit article
