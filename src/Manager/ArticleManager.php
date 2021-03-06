@@ -177,7 +177,7 @@ class ArticleManager
             if (in_array(strtolower($extension), $imageExtensions)) {
                 // Maximum width.
                 $image = new Imagick($filePublicPath);
-                
+
                 if ($image->getImageWidth() > 1080) {
                     $image->adaptiveResizeImage(1080, (1080 * $image->getImageHeight()) / $image->getImageWidth());
                     $image->writeImage();
