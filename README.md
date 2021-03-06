@@ -23,6 +23,11 @@ Install asciidoctor and asciidoctor-diagram :
     sudo gem install asciidoctor-diagram
     sudo apt install gnuplot
 
+Install image optimizer tools
+
+    sudo apt-get install -y jpegoptim optipng pngquant gifsicle webp
+    sudo npm install -g svgo
+
 To build a document :
 
     symfony console app:build-article
