@@ -1,10 +1,10 @@
 {
-  "build/0.e5585243.js": "/build/0.e5585243.js",
-  "build/admin.css": "/build/admin.30c09a8a.css",
-  "build/admin.js": "/build/admin.dbe9e551.js",
-  "build/app.css": "/build/app.2c177b9f.css",
-  "build/app.js": "/build/app.f6c58dd3.js",
-  "build/runtime.js": "/build/runtime.d94b3b43.js",
+  "build/admin.css": "/build/admin.css",
+  "build/admin.js": "/build/admin.js",
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors~app.js": "/build/vendors~app.js",
   "build/fonts/NotoSerif-Regular.ttf": "/build/fonts/NotoSerif-Regular.ebe1e45b.ttf",
   "build/fonts/OpenSans-Light.ttf": "/build/fonts/OpenSans-Light.ed41bedf.ttf",
   "build/images/ban.jpg": "/build/images/ban.936c1eed.jpg"

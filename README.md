@@ -29,4 +29,4 @@ To build a document :
 
 Crontab :
     
-    * * * * * /path/to/symfony console verify:comments
+    * * * * * /path/to/symfony console app:verify:comments

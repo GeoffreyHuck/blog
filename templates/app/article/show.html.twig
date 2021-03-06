@@ -53,7 +53,7 @@
             </form>
         {% endif %}
 
-        <article class="{% if not article.publishedAt %}unpublished{% endif %}">
+        <article class="unpublished">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
                     Edit article
@@ -193,5 +193,6 @@
           });
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <script src="/js/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>#}
 {% endblock %}
