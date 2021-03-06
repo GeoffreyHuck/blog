@@ -6,6 +6,7 @@ use App\Service\Watermark;
 use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Exception;
+use Imagick;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ArticleManager
@@ -172,10 +173,18 @@ class ArticleManager
                 $this->watermark->generate($fileArticlePath, $filePublicPath);
             }
 
-            // Optimize image.
-            if (in_array($extension, $imageExtensions)) {
-                $optimizeChain = OptimizerChainFactory::create();
+            // Treatments on images.
+            if (in_array(strtolower($extension), $imageExtensions)) {
+                // Maximum width.
+                $image = new Imagick($filePublicPath);
+                
+                if ($image->getImageWidth() > 1080) {
+                    $image->adaptiveResizeImage(1080, (1080 * $image->getImageHeight()) / $image->getImageWidth());
+                    $image->writeImage();
+                }
 
+                // Optimize.
+                $optimizeChain = OptimizerChainFactory::create();
                 $optimizeChain->optimize($filePublicPath);
             }
         }
