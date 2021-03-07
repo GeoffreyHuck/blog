@@ -62,6 +62,17 @@ class ArticleManager
 
         $preview = $this->generatePreview($content);
         $article->setPreview($preview);
+
+        $coverFilePath = $this->publicArticleBasePath . $directory . '/cover.JPG';
+        if (file_exists($coverFilePath)) {
+            $image = new Imagick($coverFilePath);
+
+            $article->setCoverWidth($image->getImageWidth());
+            $article->setCoverHeight($image->getImageHeight());
+        } else {
+            $article->setCoverWidth(null);
+            $article->setCoverHeight(null);
+        }
     }
 
     /**
@@ -203,6 +214,10 @@ class ArticleManager
             $filePublicPath = $publicArticleDirectory . '/' . $filename;
 
             $extension = substr($filename, strrpos($filename, '.'));
+
+            if ($filename == 'cover.JPG') {
+                copy($file, $publicArticleDirectory . '/cover_original.JPG');
+            }
 
             // Copy assets.
             if (in_array($extension, $copyExtensions) || (in_array($extension, $watermarkExtensions) && $isMath)) {

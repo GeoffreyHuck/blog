@@ -2,8 +2,8 @@
 
 {% block metas %}
     <meta property="og:title" content="{{ article.title }}" />
-    {% if article.themes | length > 0 %}
-        <meta property="og:image" content="{{ site_url }}{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" />
+    {% if article.coverWidth %}
+        <meta property="og:image" content="{{ site_url }}{{ asset('articles/'~ article.directory ~ '/cover_original.JPG') }}" />
     {% endif %}
     <meta property="og:description" content="{{ article.preview | striptags | trim }}" />
     <meta property="og:url" content="{{ site_url }}{{ path('article_show', { url: article.url }) }}" />
@@ -67,8 +67,8 @@
 
             <hr />
 
-            {% if article.themes | length > 0 %}
-                <img src="{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" width="1080" />
+            {% if article.coverWidth %}
+                <img src="{{ asset('articles/'~ article.directory ~ '/cover.JPG') }}" width="{{ article.coverWidth }}" height="{{ article.coverHeight }}" />
                 <br /><br />
             {% endif %}
 

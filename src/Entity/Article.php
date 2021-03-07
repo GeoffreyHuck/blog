@@ -57,6 +57,16 @@ class Article
      */
     private $directory;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $coverWidth;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $coverHeight;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -159,6 +169,30 @@ class Article
     public function setDirectory(string $directory): self
     {
         $this->directory = $directory;
+
+        return $this;
+    }
+
+    public function getCoverWidth(): ?int
+    {
+        return $this->coverWidth;
+    }
+
+    public function setCoverWidth(?int $coverWidth): self
+    {
+        $this->coverWidth = $coverWidth;
+
+        return $this;
+    }
+
+    public function getCoverHeight(): ?int
+    {
+        return $this->coverHeight;
+    }
+
+    public function setCoverHeight(?int $coverHeight): self
+    {
+        $this->coverHeight = $coverHeight;
 
         return $this;
     }
