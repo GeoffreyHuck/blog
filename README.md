@@ -62,9 +62,6 @@ To build a document, which means creating the html and preparing the files, type
     symfony console app:build-article
 
 
-
-
-
 ## Updating
 
 In development environnement :
@@ -74,3 +71,7 @@ In development environnement :
 Build for production :
 
     yarn encore prod
+
+## Licence
+
+Apache License 2.0
