@@ -15,7 +15,7 @@ monolog:
             level: debug
         deduplicated:
             type:  deduplication
-            handler: swift
+            handler: symfony_mailer
         symfony_mailer:
             type:       symfony_mailer
             from_email: 'blog@geoffreyhuck.com'
