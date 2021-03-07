@@ -148,8 +148,10 @@ class ArticleManager
             throw new Exception('The article name is not valid.');
         }
 
+        $articlePath = $this->articleBasePath . $name;
+
         // Transform the adoc into html.
-        $adocPath = $this->articleBasePath . $name . '/index.adoc';
+        $adocPath = $articlePath . '/index.adoc';
 
         $cmd = 'asciidoctor ' .
             '-r asciidoctor-mathematical ' .
@@ -162,9 +164,9 @@ class ArticleManager
         shell_exec($cmd);
 
         /**
-         * Resize the mathematical formula.
+         * Resize the mathematical formulas' <img> width and height.
          */
-        $htmlPath = $this->articleBasePath . $name  . '/index.html';
+        $htmlPath = $articlePath  . '/index.html';
 
         $resizeRatio = self::MATHEMATICAL_FONT_SIZE_RATIO;
         $htmlContent = file_get_contents($htmlPath);
@@ -196,16 +198,19 @@ class ArticleManager
         $watermarkExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         $imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
 
-        $inDirFiles = scandir($this->articleBasePath . $name);
+        $inDirFiles = scandir($articlePath);
         $files = [];
         foreach ($inDirFiles as $inDirFile) {
             $files[] = $this->articleBasePath . $name . '/' . $inDirFile;
         }
 
         // Math formulas are generated in a subdir of the same name.
-        $inSubDirFiles = scandir($this->articleBasePath . $name . '/' . $name);
-        foreach ($inSubDirFiles as $inSubDirFile) {
-            $files[] = $this->articleBasePath . $name . '/' . $name . '/' . $inSubDirFile;
+        $articleMathSubDir = $articlePath . '/' . $name;
+        if (file_exists($articleMathSubDir)) {
+            $inSubDirFiles = scandir($articleMathSubDir);
+            foreach ($inSubDirFiles as $inSubDirFile) {
+                $files[] = $articleMathSubDir . '/' . $inSubDirFile;
+            }
         }
 
         foreach ($files as $file) {
