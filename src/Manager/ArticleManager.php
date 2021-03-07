@@ -11,6 +11,8 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ArticleManager
 {
+    const MATHEMATICAL_FONT_SIZE_RATIO = 1.3;
+
     private $articleBasePath = __DIR__ . '/../../articles/';
     private $publicArticleBasePath = __DIR__ . '/../../public/articles/';
 
@@ -152,7 +154,7 @@ class ArticleManager
         $cmd = 'asciidoctor ' .
             '-r asciidoctor-mathematical ' .
             '-r asciidoctor-diagram ' .
-            '-a mathematical-ppi=72 ' .
+            '-a mathematical-ppi=' . (72 * self::MATHEMATICAL_FONT_SIZE_RATIO) . ' ' .
             '-a outdir=articles ' .
             '-a imagesdir=' . $name . ' ' .
             '-s ' . $adocPath;
@@ -164,7 +166,7 @@ class ArticleManager
          */
         $htmlPath = $this->articleBasePath . $name  . '/index.html';
 
-        $resizeRatio = 1.5;
+        $resizeRatio = self::MATHEMATICAL_FONT_SIZE_RATIO;
         $htmlContent = file_get_contents($htmlPath);
 
         $htmlContent = preg_replace_callback('#<img.*src=".*stem-.*".*width="(\d+)".*height="(\d+)">#U', function ($matches) use ($resizeRatio) {
