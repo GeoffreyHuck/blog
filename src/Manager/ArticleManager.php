@@ -141,6 +141,7 @@ class ArticleManager
         $cmd = 'asciidoctor ' .
             '-r asciidoctor-mathematical ' .
             '-r asciidoctor-diagram ' .
+            '-a mathematical-ppi=72 ' .
             '-a outdir=articles ' .
             '-a imagesdir=' . $name . ' ' .
             '-s ' . $adocPath;
