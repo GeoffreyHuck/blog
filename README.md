@@ -6,23 +6,19 @@ It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and
 
 ## Installation
 
-1. Create the database :
-    
+### 1. Create the database :
 
     bin/console doctrine:schema:update --force
 
-2. Create an admin user :
-
+### 2. Create an admin user :
 
     bin/console app:create:admin
 
-3. Install the javascript dependencies :
-
+### 3. Install the javascript dependencies :
 
     yarn install
-    
 
-4. Install asciidoctor, asciidoctor-diagram and asciidoctor-mathematical :
+### 4. Install asciidoctor, asciidoctor-diagram and asciidoctor-mathematical :
 
 
     sudo apt install -y asciidoctor
@@ -32,19 +28,18 @@ It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and
     sudo apt-get -qq -y install bison flex libffi-dev libxml2-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev fonts-lyx cmake fonts-lyx
     sudo gem install asciidoctor-mathematical
 
-5. Install image optimization tools
-
+### 5. Install image optimization tools
 
     sudo apt-get install -y jpegoptim optipng pngquant gifsicle webp
     sudo npm install -g svgo
 
-6. Setup crontab
+### 6. Setup crontab
 
 Add the following into crontab to enable the spam verification.
 
     * * * * * /path/to/app console app:verify:comments
 
-7. Configuration
+### 7. Configuration
 
 Copy the *.env* file into *.env.local* and fill up the configuration. For production, don't forget to put :
 
@@ -60,7 +55,6 @@ To write an article, create a new directory inside the articles/ directory.
 To build a document, which means creating the html and preparing the files, type the following command :
 
     symfony console app:build-article
-
 
 ## Updating
 
