@@ -164,4 +164,25 @@ class ArticleController extends AbstractController
 
         return $this->redirect($comment->getUrl() . '?deleted=1#' . $comment->getAnchor());
     }
+
+    /**
+     * @Route("/delete/{url}", name="article_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
+     *
+     * @param Request $request The request.
+     * @param Article $article The article.
+     *
+     * @return Response
+     */
+    public function deleteAction(Request $request, Article $article): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($article);
+        $em->flush();
+
+        $this->addFlash('success', 'The article has been deleted.');
+
+        return $this->redirectToRoute('homepage');
+    }
 }

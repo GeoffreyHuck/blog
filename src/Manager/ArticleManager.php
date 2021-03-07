@@ -137,11 +137,36 @@ class ArticleManager
 
         // Transform the adoc into html.
         $adocPath = $this->articleBasePath . $name . '/index.adoc';
-        $adocDir = $this->articleBasePath . $name . '/';
 
-        $cmd = 'asciidoctor -r asciidoctor-diagram -a imagesoutdir=' . $adocDir . ' -a imagesdir=/articles/' . $name . ' -s ' . $adocPath;
+        $cmd = 'asciidoctor ' .
+            '-r asciidoctor-mathematical ' .
+            '-r asciidoctor-diagram ' .
+            '-a outdir=articles ' .
+            '-a imagesdir=' . $name . ' ' .
+            '-s ' . $adocPath;
         echo $cmd . "\n";
         shell_exec($cmd);
+
+        /**
+         * Resize the mathematical formula.
+         */
+        $htmlPath = $this->articleBasePath . $name  . '/index.html';
+
+        $resizeRatio = 1.5;
+        $htmlContent = file_get_contents($htmlPath);
+
+        $htmlContent = preg_replace_callback('#<img.*src=".*stem-.*".*width="(\d+)".*height="(\d+)">#U', function ($matches) use ($resizeRatio) {
+            $newWidth = round($matches[1] * $resizeRatio);
+            $newHeight = round($matches[2] * $resizeRatio);
+
+            $result = $matches[0];
+            $result = str_replace('width="' . $matches[1] . '"', 'width="' . $newWidth . '"', $result);
+            $result = str_replace('height="' . $matches[2] . '"', 'height="' . $newHeight . '"', $result);
+
+            return $result;
+        }, $htmlContent);
+
+        file_put_contents($htmlPath, $htmlContent);
 
         // Copy the resources into public directory.
         $publicArticleDirectory = $this->publicArticleBasePath . $name;
@@ -151,30 +176,45 @@ class ArticleManager
 
         /**
          * When the images extensions are in uppercase, they are copied.
-         * When they are in lowercase, a watermark is added on it.
+         * When they are in lowercase, a watermark is added on it (if it's not a math formula).
          */
         $copyExtensions = ['.mp3', '.mp4', '.JPG', '.PNG', '.JPEG', '.GIF', '.WEBP'];
         $watermarkExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         $imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-        $files = scandir($this->articleBasePath . $name);
-        foreach ($files as $file) {
-            $fileArticlePath = $this->articleBasePath . $name . '/' . $file;
-            $filePublicPath = $publicArticleDirectory . '/' . $file;
 
-            $extension = substr($file, strrpos($file, '.'));
+        $inDirFiles = scandir($this->articleBasePath . $name);
+        $files = [];
+        foreach ($inDirFiles as $inDirFile) {
+            $files[] = $this->articleBasePath . $name . '/' . $inDirFile;
+        }
+
+        // Math formulas are generated in a subdir of the same name.
+        $inSubDirFiles = scandir($this->articleBasePath . $name . '/' . $name);
+        foreach ($inSubDirFiles as $inSubDirFile) {
+            $files[] = $this->articleBasePath . $name . '/' . $name . '/' . $inSubDirFile;
+        }
+
+        foreach ($files as $file) {
+            $filename = basename($file);
+
+            $isMath = (substr($filename, 0, 5) == 'stem-');
+
+            $filePublicPath = $publicArticleDirectory . '/' . $filename;
+
+            $extension = substr($filename, strrpos($filename, '.'));
 
             // Copy assets.
-            if (in_array($extension, $copyExtensions)) {
-                copy($fileArticlePath, $filePublicPath);
+            if (in_array($extension, $copyExtensions) || (in_array($extension, $watermarkExtensions) && $isMath)) {
+                copy($file, $filePublicPath);
             }
 
             // Generate watermark.
-            if (in_array($extension, $watermarkExtensions)) {
-                $this->watermark->generate($fileArticlePath, $filePublicPath);
+            if (in_array($extension, $watermarkExtensions) && !$isMath) {
+                $this->watermark->generate($file, $filePublicPath);
             }
 
             // Treatments on images.
-            if (in_array(strtolower($extension), $imageExtensions)) {
+            if (in_array(strtolower($extension), $imageExtensions) && !$isMath) {
                 // Maximum width.
                 $image = new Imagick($filePublicPath);
 

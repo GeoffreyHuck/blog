@@ -5,6 +5,12 @@
 
 {% block content %}
     <div class="container">
+        <form method="post" action="{{ path('article_delete', { url: article.url }) }}" class="float-right">
+            <button type="submit" class="btn">
+                Delete article
+            </button>
+        </form>
+
         <h1>Edit article {{ article.title }}</h1>
 
         <form method="post" novalidate>
