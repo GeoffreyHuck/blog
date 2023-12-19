@@ -6,19 +6,23 @@ It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and
 
 ## Installation
 
-### 1. Create the database :
+### Install dependencies :
+
+    composer install
+
+### Create the database :
 
     bin/console doctrine:schema:update --force
 
-### 2. Create an admin user :
+### Create an admin user :
 
     bin/console app:create:admin
 
-### 3. Install the javascript dependencies :
+### Install the javascript dependencies :
 
     yarn install
 
-### 4. Install asciidoctor, asciidoctor-diagram and asciidoctor-mathematical :
+### Install asciidoctor, asciidoctor-diagram and asciidoctor-mathematical :
 
 
     sudo apt install -y asciidoctor
@@ -28,18 +32,19 @@ It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and
     sudo apt-get -qq -y install bison flex libffi-dev libxml2-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev fonts-lyx cmake fonts-lyx
     sudo gem install asciidoctor-mathematical
 
-### 5. Install image optimization tools
+### Install image optimization tools
 
+    sudo apt install php-imagick imagick
     sudo apt-get install -y jpegoptim optipng pngquant gifsicle webp
     sudo npm install -g svgo
 
-### 6. Setup crontab
+### Setup crontab
 
 Add the following into crontab to enable the spam verification.
 
     * * * * * /path/to/app console app:verify:comments
 
-### 7. Configuration
+### Configuration
 
 Copy the *.env* file into *.env.local* and fill up the configuration. For production, don't forget to put :
 
@@ -52,9 +57,15 @@ You can get a free [Akismet key](https://akismet.com/signup/) to fight against s
 
 To write an article, create a new directory inside the articles/ directory.
 
+- `index.adoc` is the content is ASCII-Doc format.
+- `cover.JPG` is the cover image.
+- `otherimage.JPG` any other image you use in your article. The extension must be in uppercase.
+
 To build a document, which means creating the html and preparing the files, type the following command :
 
     symfony console app:build-article
+
+Then synchronize the articles by login in `/login` and clicking on the `Synchronize articles` button.
 
 ## Updating
 
