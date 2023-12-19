@@ -2,7 +2,7 @@
 
 This is the code of my personal blog. The live version is accessible here : [geoffreyhuck.com](https://geoffreyhuck.com)
 
-It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and allows writing articles in the [AsciiDoc](https://asciidoc.org) format, which is very convenient to add mathematical formulas, graphic plots and other schemas such as neural network representations.
+It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and allows writing articles in the [AsciiDoc](https://asciidoc.org) format, which is very convenient to add mathematical formulas, graphic plots, code, and other schemas such as neural network representations.
 
 ## Installation
 
