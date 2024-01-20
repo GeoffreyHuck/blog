@@ -42,6 +42,18 @@ hr {
     text-shadow: 1px 1px $color-white;
     font-size: 28px;
   }
+
+  .languages {
+    display: inline-block;
+    list-style: none;
+    margin-left: 10px;
+    position: relative;
+    top: -4px;
+
+    img {
+      height: 24px;
+    }
+  }
 }
 
 .main-menu-container {

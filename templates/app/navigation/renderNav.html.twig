@@ -1,0 +1,55 @@
+<nav>
+    <div class="ban header">
+        <div class="header-content">
+            <div class="catch">
+                Learn,<br />
+                Think,<br />
+                Compute.
+            </div>
+            <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
+            <ul class="languages">
+                {% for language in languages %}
+                    {% if language.code != app.request.locale %}
+                        <li>
+                            <a href="{{ path('homepage', { _locale: language.code }) }}">
+                                <img src="{{ asset('images/lang/' ~ language.code ~ '.png') }}" alt="{{ language.name }}" />
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="main-menu-container">
+        <ul class="main-menu">
+            <li>
+                <a href="{{ path('theme_show', { url: 'software-performance' }) }}">
+                    Software Performance
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('theme_show', { url: 'deep-learning' }) }}">
+                    Deep Learning
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('article_show', { url: 'about-me' }) }}">
+                    About Me
+                </a>
+            </li>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li>
+                    <a href="{{ path('theme_list') }}">Themes</a>
+                </li>
+                <li>
+                    <a href="{{ path('language_list') }}">Languages</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

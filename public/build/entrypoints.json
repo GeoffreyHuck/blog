@@ -4,16 +4,16 @@
       "js": [
         "/build/runtime.d94b3b43.js",
         "/build/0.e5585243.js",
-        "/build/app.f6c58dd3.js"
+        "/build/app.723cdae2.js"
       ],
       "css": [
-        "/build/app.1430d0cb.css"
+        "/build/app.183ed993.css"
       ]
     },
     "admin": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/admin.dbe9e551.js"
+        "/build/admin.19b5b91d.js"
       ],
       "css": [
         "/build/admin.30c09a8a.css"

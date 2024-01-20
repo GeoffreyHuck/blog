@@ -34,23 +34,8 @@
                 <div class="flash flash-{{ type }}">{{ message }}</div>
             {% endfor %}
         {% endfor %}
-        <nav>
-            <div class="ban header">
-                <div class="header-content">
-                    <div class="catch">
-                        Learn,<br />
-                        Think,<br />
-                        Compute.
-                    </div>
-                    <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
 
-            <div class="main-menu-container">
-                {{ render(controller('App\\Controller\\MenuController::renderMenu')) }}
-            </div>
-        </nav>
+        {{ render(controller('App\\Controller\\NavigationController::renderNav')) }}
 
         {% block content %}
 
