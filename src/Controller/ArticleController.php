@@ -90,6 +90,9 @@ class ArticleController extends AbstractController
         ContactHandler $contactHandler
     ): Response
     {
+        if ($article->getLanguage()->getCode() != $request->getLocale()) {
+            throw $this->createNotFoundException('Locale does not match');
+        }
         if (!$article->getPublishedAt() && !$this->isGranted('ROLE_SUPER_ADMIN')) {
             throw $this->createNotFoundException('Not published');
         }
