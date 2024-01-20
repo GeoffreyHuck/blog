@@ -30,6 +30,12 @@ class ArticleRepository extends ServiceEntityRepository
                 ->setParameter('themeId', $filters['theme']->getId());
         }
 
+        if (isset($filters['language']) && !$isAdmin) {
+            $qb->leftJoin('a.language', 'l')
+                ->andWhere('l.code = :language')
+                ->setParameter('language', $filters['language']);
+        }
+
         if ($isAdmin) {
             $qb->addOrderBy('CASE WHEN a.publishedAt IS NULL THEN 0 ELSE 1 END', 'ASC');
         } else {

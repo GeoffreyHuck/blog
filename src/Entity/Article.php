@@ -67,6 +67,12 @@ class Article
      */
     private $coverHeight;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $language;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -193,6 +199,18 @@ class Article
     public function setCoverHeight(?int $coverHeight): self
     {
         $this->coverHeight = $coverHeight;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }

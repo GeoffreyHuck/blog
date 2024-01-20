@@ -25,6 +25,11 @@ class ArticleType extends AbstractType
         $builder->add('url', null, [
             'label' => 'Url',
         ]);
+        $builder->add('language', null, [
+            'label' => 'Language',
+            'choice_label' => 'name',
+            'required' => true,
+        ]);
 
         $builder->add('themes', EntityType::class, [
             'label' => 'Themes',

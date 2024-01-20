@@ -2,6 +2,7 @@
 namespace App\Manager;
 
 use App\Entity\Article;
+use App\Entity\Language;
 use App\Service\Watermark;
 use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
@@ -74,6 +75,14 @@ class ArticleManager
         } else {
             $article->setCoverWidth(null);
             $article->setCoverHeight(null);
+        }
+
+        if (!$article->getLanguage()) {
+            $languageRepo = $this->em->getRepository(Language::class);
+            $language = $languageRepo->findOneBy([
+                'code' => 'en',
+            ]);
+            $article->setLanguage($language);
         }
     }
 
