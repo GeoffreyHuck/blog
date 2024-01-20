@@ -69,7 +69,7 @@ class Article
 
     /**
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="articles")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $language;
 
