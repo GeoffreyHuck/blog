@@ -4,6 +4,7 @@ namespace App\Manager;
 use App\Entity\Article;
 use App\Entity\Language;
 use App\Service\Watermark;
+use App\Utils\HtmlHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Exception;
@@ -191,6 +192,8 @@ class ArticleManager
 
             return $result;
         }, $htmlContent);
+
+        $htmlContent = HtmlHelper::fixBuiltImageSrc($htmlContent);
 
         file_put_contents($htmlPath, $htmlContent);
 
