@@ -1,0 +1,29 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}Languages - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('language_list') }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <a href="{{ path('language_new') }}" class="btn float-right">
+            New language
+        </a>
+
+        <h1>Languages</h1>
+
+        {% for language in languages %}
+            <hr />
+
+            {{ language.name }} ({{ language.code }})
+
+            <a href="{{ path('language_edit', { code: language.code }) }}" class="btn float-right">
+                Edit language
+            </a>
+            <div class="clearfix"></div>
+        {% endfor %}
+
+        {% if (languages | length) == 0 %}
+            No languages exists yet.
+        {% endif %}
+    </div>
+{% endblock %}

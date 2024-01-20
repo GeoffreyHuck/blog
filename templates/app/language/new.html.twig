@@ -1,0 +1,23 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}New language - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('language_new') }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>New language</h1>
+
+        <form method="post" novalidate>
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.code) }}
+
+            {{ form_rest(form) }}
+
+            <button class="btn" type="submit">
+                Create this language
+            </button>
+        </form>
+    </div>
+{% endblock %}

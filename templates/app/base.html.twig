@@ -66,7 +66,10 @@
                     </li>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <li>
-                            <a href="{{ path('theme_list') }}" class="logout">Themes</a>
+                            <a href="{{ path('theme_list') }}">Themes</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('language_list') }}">Languages</a>
                         </li>
                         <li>
                             <a href="{{ path('app_logout') }}" class="logout">Logout {{ app.user.email }}</a>
