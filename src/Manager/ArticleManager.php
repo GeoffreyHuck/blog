@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Exception;
 use Imagick;
+use Masterminds\HTML5;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class ArticleManager
@@ -288,8 +289,8 @@ class ArticleManager
     {
         // We want to retrieve <div id="preamble">content</div> from the html content.
 
-        $dom = new DOMDocument();
-        $dom->loadHTML($content);
+        $html5 = new HTML5();
+        $dom = $html5->loadHTML($content);
 
         $preamble = $dom->getElementById('preamble');
 
