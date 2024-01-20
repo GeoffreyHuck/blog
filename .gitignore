@@ -24,3 +24,8 @@ yarn-error.log
 /.idea/
 articles/
 public/articles/
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

@@ -67,6 +67,12 @@ To build a document, which means creating the html and preparing the files, type
 
 Then synchronize the articles by login in `/login` and clicking on the `Synchronize articles` button.
 
+## Tests
+
+To run the tests, type the following command :
+
+    vendor/bin/phpunit
+
 ## Updating
 
 In development environnement :
