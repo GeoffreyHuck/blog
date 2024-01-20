@@ -34,9 +34,15 @@ class Language
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Theme::class, mappedBy="language")
+     */
+    private $themes;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,36 @@ class Language
             // set the owning side to null (unless already changed)
             if ($article->getLanguage() === $this) {
                 $article->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Theme[]
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes[] = $theme;
+            $theme->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        if ($this->themes->removeElement($theme)) {
+            // set the owning side to null (unless already changed)
+            if ($theme->getLanguage() === $this) {
+                $theme->setLanguage(null);
             }
         }
 

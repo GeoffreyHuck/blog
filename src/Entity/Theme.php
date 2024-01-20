@@ -35,6 +35,11 @@ class Theme
      */
     private $articles;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="themes")
+     */
+    private $language;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -97,6 +102,18 @@ class Theme
         if ($this->articles->removeElement($article)) {
             $article->removeTheme($this);
         }
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }
