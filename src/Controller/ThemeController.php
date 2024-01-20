@@ -123,14 +123,18 @@ class ThemeController extends AbstractController
     /**
      * @Route("/{url}", name="theme_show")
      *
-     * @param Theme  $theme   The theme.
-     * @param string $_locale The locale.
+     * @param Request $request The request.
+     * @param Theme   $theme   The theme.
      *
      * @return Response
      * @throws Exception
      */
-    public function showAction(Theme $theme, string $_locale = 'en'): Response
+    public function showAction(Request $request, Theme $theme): Response
     {
+        if ($theme->getLanguage()->getCode() !== $request->getLocale()) {
+            throw $this->createNotFoundException('Locale does not match');
+        }
+
         $articles = $this->getDoctrine()->getRepository(Article::class)->getAll([
             'theme' => $theme,
         ], $this->isGranted('ROLE_SUPER_ADMIN'));
