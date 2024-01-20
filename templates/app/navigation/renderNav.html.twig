@@ -32,11 +32,13 @@
                 </li>
             {% endfor %}
 
-            <li>
-                <a href="{{ path('article_show', { url: 'about-me' }) }}">
-                    About Me
-                </a>
-            </li>
+            {% for article in articles %}
+                <li>
+                    <a href="{{ path('article_show', { url: article.url }) }}">
+                        {{ article.title }}
+                    </a>
+                </li>
+                {% endfor %}
 
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <li>

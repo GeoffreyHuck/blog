@@ -13,6 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Theme
 {
+    use OrderableTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -39,11 +41,6 @@ class Theme
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="themes")
      */
     private $language;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $position = 0;
 
     public function __construct()
     {
@@ -119,18 +116,6 @@ class Theme
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
-
-        return $this;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(?int $position): self
-    {
-        $this->position = $position;
 
         return $this;
     }

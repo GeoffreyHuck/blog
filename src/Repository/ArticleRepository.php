@@ -19,6 +19,27 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    /**
+     * Finds the articles for the menu.
+     *
+     * @param string $locale The locale.
+     *
+     * @return Article[]
+     */
+    public function findForMenu(string $locale): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->select('a')
+            ->innerJoin('a.language', 'l')
+            ->where('l.code = :locale')
+            ->setParameter('locale', $locale)
+            ->andWhere('a.inMainMenu = true')
+            ->orderBy('a.position', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getAll($filters = [], $isAdmin = false)
     {
         $qb = $this->createQueryBuilder('a')

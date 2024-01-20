@@ -22,7 +22,16 @@
             {{ form_row(form.publishedAt) }}
 
             <br /><br />
-            {{ form_row(form.themes) }}
+            <fieldset>
+                <legend>Themes</legend>
+                {{ form_row(form.themes) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Put in the main menu</legend>
+                {{ form_row(form.inMainMenu) }}
+                {{ form_row(form.position) }}
+            </fieldset>
 
             {{ form_rest(form) }}
 

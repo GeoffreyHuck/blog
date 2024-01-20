@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Language;
 use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,13 +14,13 @@ class NavigationController extends AbstractController
     {
         $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
 
-        $themes = $this->getDoctrine()->getRepository(Theme::class)->findForMenu($request->getLocale(), [
-            'position' => 'ASC',
-        ]);
+        $themes = $this->getDoctrine()->getRepository(Theme::class)->findForMenu($request->getLocale());
+        $articles = $this->getDoctrine()->getRepository(Article::class)->findForMenu($request->getLocale());
 
         return $this->render('app/navigation/renderNav.html.twig', [
             'languages' => $languages,
             'themes' => $themes,
+            'articles' => $articles,
         ]);
     }
 }

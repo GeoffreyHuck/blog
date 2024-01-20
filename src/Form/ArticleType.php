@@ -37,6 +37,12 @@ class ArticleType extends AbstractType
             'multiple' => true,
             'expanded' => true,
         ]);
+        $builder->add('inMainMenu', null, [
+            'label' => 'Put the entry in the main menu',
+        ]);
+        $builder->add('position', null, [
+            'label' => 'Position in the main menu. Used to sort the entries along with the themes in the main menu',
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

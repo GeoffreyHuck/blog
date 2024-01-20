@@ -15,6 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Article
 {
+    // Order when in menu.
+    use OrderableTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -72,6 +75,11 @@ class Article
      * @ORM\JoinColumn(nullable=true)
      */
     private $language;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $inMainMenu = false;
 
     public function __construct()
     {
@@ -211,6 +219,18 @@ class Article
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getInMainMenu(): ?bool
+    {
+        return $this->inMainMenu;
+    }
+
+    public function setInMainMenu(?bool $inMainMenu): self
+    {
+        $this->inMainMenu = $inMainMenu;
 
         return $this;
     }
