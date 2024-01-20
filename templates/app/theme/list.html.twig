@@ -30,7 +30,7 @@
             <ul>
                 {% for article in theme.articles %}
                     <li>
-                        <a href="{{ path('article_show', { url: article.url }) }}">{{ article.name }}</a>
+                        <a href="{{ path('article_show', { url: article.url }) }}">{{ article.title }}</a>
                     </li>
                 {% endfor %}
             </ul>
