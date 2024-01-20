@@ -21,6 +21,9 @@ class ThemeType extends AbstractType
             'choice_label' => 'name',
             'required' => true,
         ]);
+        $builder->add('position', null, [
+            'label' => 'Position in menu (smaller number first)',
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

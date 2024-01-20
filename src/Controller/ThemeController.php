@@ -25,7 +25,9 @@ class ThemeController extends AbstractController
      */
     public function listAction(): Response
     {
-        $themes = $this->getDoctrine()->getRepository(Theme::class)->findAll();
+        $themes = $this->getDoctrine()->getRepository(Theme::class)->findBy([], [
+            'position' => 'ASC',
+        ]);
 
         return $this->render('app/theme/list.html.twig', [
             'themes' => $themes,

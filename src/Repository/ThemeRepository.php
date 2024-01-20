@@ -17,4 +17,24 @@ class ThemeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Theme::class);
     }
+
+    /**
+     * Finds the themes for the menu.
+     *
+     * @param string $locale The locale.
+     *
+     * @return Theme[]
+     */
+    public function findForMenu(string $locale): array
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->select('t')
+            ->innerJoin('t.language', 'l')
+            ->where('l.code = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.position', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

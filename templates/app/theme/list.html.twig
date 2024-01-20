@@ -27,6 +27,8 @@
             <h2>
                 <a href="{{ path('theme_show', { url: theme.url }) }}">{{ theme.name }}</a>
             </h2>
+            Language: {{ theme.language.name }}<br />
+            Position menu: {{ theme.position }}
             <ul>
                 {% for article in theme.articles %}
                     <li>

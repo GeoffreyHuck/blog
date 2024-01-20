@@ -40,6 +40,11 @@ class Theme
      */
     private $language;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $position = 0;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -114,6 +119,18 @@ class Theme
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }
