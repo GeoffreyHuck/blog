@@ -6,7 +6,7 @@
                 Think,<br />
                 Compute.
             </div>
-            <a class="site-name" href="{{ path('homepage') }}">Geoffrey Huck</a>
+            <a class="site-name" href="{{ path('homepage', { _locale: app.request.locale }) }}">Geoffrey Huck</a>
             <ul class="languages">
                 {% for language in languages %}
                     {% if language.code != app.request.locale %}
@@ -26,7 +26,7 @@
         <ul class="main-menu">
             {% for theme in themes %}
                 <li>
-                    <a href="{{ path('theme_show', { url: theme.url }) }}">
+                    <a href="{{ path('theme_show', { url: theme.url, _locale: app.request.locale }) }}">
                         {{ theme.name }}
                     </a>
                 </li>
@@ -34,7 +34,7 @@
 
             {% for article in articles %}
                 <li>
-                    <a href="{{ path('article_show', { url: article.url }) }}">
+                    <a href="{{ path('article_show', { url: article.url, _locale: app.request.locale }) }}">
                         {{ article.title }}
                     </a>
                 </li>

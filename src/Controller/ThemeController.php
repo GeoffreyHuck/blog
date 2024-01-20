@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/themes")
+ * @Route("/{_locale}/themes", requirements={"_locale": "en|fr"})
  */
 class ThemeController extends AbstractController
 {
@@ -123,13 +123,13 @@ class ThemeController extends AbstractController
     /**
      * @Route("/{url}", name="theme_show")
      *
-     * @param Theme          $theme          The theme.
-     * @param ArticleManager $articleManager The article manager.
+     * @param Theme  $theme   The theme.
+     * @param string $_locale The locale.
      *
      * @return Response
      * @throws Exception
      */
-    public function showAction(Theme $theme, ArticleManager $articleManager): Response
+    public function showAction(Theme $theme, string $_locale = 'en'): Response
     {
         $articles = $this->getDoctrine()->getRepository(Article::class)->getAll([
             'theme' => $theme,

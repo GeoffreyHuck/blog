@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/articles")
+ * @Route("/{_locale}/articles", requirements={"_locale": "en|fr"})
  */
 class ArticleController extends AbstractController
 {
@@ -87,7 +87,8 @@ class ArticleController extends AbstractController
         Article $article,
         CommentHandler $commentHandler,
         SubscriptionHandler $subscriptionHandler,
-        ContactHandler $contactHandler): Response
+        ContactHandler $contactHandler
+    ): Response
     {
         if (!$article->getPublishedAt() && !$this->isGranted('ROLE_SUPER_ADMIN')) {
             throw $this->createNotFoundException('Not published');
