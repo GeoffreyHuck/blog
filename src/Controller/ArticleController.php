@@ -43,17 +43,25 @@ class ArticleController extends AbstractController
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
      * @param Request $request The request.
+     * @param ArticleManager $articleManager The article manager.
      * @param Article $article The article.
      *
      * @return Response
+     * @throws Exception
      */
-    public function editAction(Request $request, Article $article): Response
+    public function editAction(Request $request, ArticleManager $articleManager, Article $article): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
+
+        $oldRawContent = $article->getRawContent();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                //if ($oldRawContent != $article->getRawContent()) {
+                    $articleManager->build($article);
+//                }
+
                 $em = $this->getDoctrine()->getManager();
 
                 $em->persist($article);

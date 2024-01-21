@@ -86,6 +86,11 @@ class Article
      */
     private $mainMenuTitle;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $rawContent;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -248,6 +253,18 @@ class Article
     public function setMainMenuTitle(?string $mainMenuTitle): self
     {
         $this->mainMenuTitle = $mainMenuTitle;
+
+        return $this;
+    }
+
+    public function getRawContent(): ?string
+    {
+        return $this->rawContent;
+    }
+
+    public function setRawContent(?string $rawContent): self
+    {
+        $this->rawContent = $rawContent;
 
         return $this;
     }

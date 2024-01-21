@@ -6,7 +6,6 @@ use App\Entity\Language;
 use App\Service\Watermark;
 use App\Utils\HtmlHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use DOMDocument;
 use Exception;
 use Imagick;
 use Masterminds\HTML5;
@@ -16,16 +15,16 @@ class ArticleManager
 {
     const MATHEMATICAL_FONT_SIZE_RATIO = 1.3;
 
-    private $articleBasePath = __DIR__ . '/../../articles/';
-    private $publicArticleBasePath = __DIR__ . '/../../public/articles/';
+    private string $articleBasePath = __DIR__ . '/../../articles/';
+    private string $publicArticleBasePath = __DIR__ . '/../../public/articles/';
 
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /** @var Watermark */
-    private $watermark;
+    private Watermark $watermark;
 
     /**
      * ArticleManager constructor.
@@ -150,28 +149,27 @@ class ArticleManager
     /**
      * Build an article.
      *
-     * @param string $name The article name.
+     * @param Article $article The article.
+     *
      * @throws Exception
      */
-    public function build(string $name): void
+    public function build(Article $article): void
     {
-        if (!preg_match('#^[a-zA-Z0-9_\- ]+$#', $name)) {
-            throw new Exception('The article name is not valid.');
-        }
+        $articlePath = $this->articleBasePath . $article->getUrl();
 
-        $articlePath = $this->articleBasePath . $name;
+        // Put the asciidoc content into a file.
+        $adocPath = $articlePath . '/index.adoc';
+        file_put_contents($adocPath, $article->getRawContent());
 
         // Transform the adoc into html.
-        $adocPath = $articlePath . '/index.adoc';
-
         $cmd = 'asciidoctor ' .
             '-r asciidoctor-mathematical ' .
             '-r asciidoctor-diagram ' .
             '-a mathematical-ppi=' . (72 * self::MATHEMATICAL_FONT_SIZE_RATIO) . ' ' .
             '-a outdir=articles ' .
-            '-a imagesdir=' . $name . ' ' .
+            '-a imagesdir=' . $article->getUrl() . ' ' .
             '-s ' . $adocPath;
-        echo $cmd . "\n";
+
         shell_exec($cmd);
 
         /**
@@ -193,12 +191,14 @@ class ArticleManager
             return $result;
         }, $htmlContent);
 
+        // Fix the built image src.
         $htmlContent = HtmlHelper::fixBuiltImageSrc($htmlContent);
 
+        // Update the html file.
         file_put_contents($htmlPath, $htmlContent);
 
         // Copy the resources into public directory.
-        $publicArticleDirectory = $this->publicArticleBasePath . $name;
+        $publicArticleDirectory = $this->publicArticleBasePath . $article->getUrl();
         if (!file_exists($publicArticleDirectory)) {
             mkdir($publicArticleDirectory, 0777, true);
         }
@@ -214,11 +214,11 @@ class ArticleManager
         $inDirFiles = scandir($articlePath);
         $files = [];
         foreach ($inDirFiles as $inDirFile) {
-            $files[] = $this->articleBasePath . $name . '/' . $inDirFile;
+            $files[] = $this->articleBasePath . $article->getUrl() . '/' . $inDirFile;
         }
 
         // Math formulas are generated in a subdir of the same name.
-        $articleMathSubDir = $articlePath . '/' . $name;
+        $articleMathSubDir = $articlePath . '/' . $article->getUrl();
         if (file_exists($articleMathSubDir)) {
             $inSubDirFiles = scandir($articleMathSubDir);
             foreach ($inSubDirFiles as $inSubDirFile) {
