@@ -32,7 +32,7 @@ class ArticleType extends AbstractType
         ]);
 
         $builder->add('themes', EntityType::class, [
-            'label' => 'Themes',
+            'label' => 'Add in articles listed for the following themes',
             'class' => Theme::class,
             'multiple' => true,
             'expanded' => true,
