@@ -24,6 +24,9 @@ class ThemeType extends AbstractType
         $builder->add('position', null, [
             'label' => 'Position in menu (smaller number first)',
         ]);
+        $builder->add('mainMenuTitle', null, [
+            'label' => 'Title in the main menu',
+        ]);
         $builder->add('pageArticle', null, [
             'label' => 'Article displayed as the content of the theme page',
             'required' => false,

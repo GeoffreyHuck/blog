@@ -40,6 +40,9 @@ class ArticleType extends AbstractType
         $builder->add('inMainMenu', null, [
             'label' => 'Put the entry in the main menu',
         ]);
+        $builder->add('mainMenuTitle', null, [
+            'label' => 'Title in the main menu',
+        ]);
         $builder->add('position', null, [
             'label' => 'Position in the main menu. Used to sort the entries along with the themes in the main menu',
         ]);

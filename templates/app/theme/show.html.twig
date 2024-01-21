@@ -10,7 +10,13 @@
                 Edit theme
             </a>
         {% endif %}
-        <h1>{% if theme.pageArticle %}{{ theme.pageArticle.title }}{% else %}{{ theme.name }}{% endif %}</h1>
+        <h1>
+            {% if theme.mainMenuTitle %}
+                {{ theme.mainMenuTitle }}
+            {% else %}
+                {{ theme.name }}
+            {% endif %}
+        </h1>
 
         {% if theme.pageArticle %}
             {% if is_granted('ROLE_SUPER_ADMIN') %}

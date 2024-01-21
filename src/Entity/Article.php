@@ -81,6 +81,11 @@ class Article
      */
     private $inMainMenu = false;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mainMenuTitle;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -231,6 +236,18 @@ class Article
     public function setInMainMenu(?bool $inMainMenu): self
     {
         $this->inMainMenu = $inMainMenu;
+
+        return $this;
+    }
+
+    public function getMainMenuTitle(): ?string
+    {
+        return $this->mainMenuTitle;
+    }
+
+    public function setMainMenuTitle(?string $mainMenuTitle): self
+    {
+        $this->mainMenuTitle = $mainMenuTitle;
 
         return $this;
     }

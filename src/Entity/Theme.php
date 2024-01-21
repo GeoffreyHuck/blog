@@ -47,6 +47,11 @@ class Theme
      */
     private $pageArticle;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mainMenuTitle;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -133,6 +138,18 @@ class Theme
     public function setPageArticle(?Article $pageArticle): self
     {
         $this->pageArticle = $pageArticle;
+
+        return $this;
+    }
+
+    public function getMainMenuTitle(): ?string
+    {
+        return $this->mainMenuTitle;
+    }
+
+    public function setMainMenuTitle(?string $mainMenuTitle): self
+    {
+        $this->mainMenuTitle = $mainMenuTitle;
 
         return $this;
     }
