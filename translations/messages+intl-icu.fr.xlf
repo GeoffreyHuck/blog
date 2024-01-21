@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="vko3pnY" resname="All rights reserved">
+        <source>All rights reserved</source>
+        <target>Tous droits réservés</target>
+      </trans-unit>
+      <trans-unit id="bCwLjjP" resname="homepage.title">
+        <source>homepage.title</source>
+        <target>Geoffrey Huck - Découvertes, pensées, code</target>
+      </trans-unit>
+      <trans-unit id="EtocFRq" resname="homepage.h1">
+        <source>homepage.h1</source>
+        <target>Aventure en territoires computationnels</target>
+      </trans-unit>
+      <trans-unit id="IbGqFRy" resname="Published on">
+        <source>Published on</source>
+        <target>Publié le</target>
+      </trans-unit>
+      <trans-unit id="h16XilN" resname="Leave a comment">
+        <source>Leave a comment</source>
+        <target>Ajouter un commentaire</target>
+      </trans-unit>
+      <trans-unit id="G4w4IXG" resname="Your email will not appear on the website.">
+        <source>Your email will not appear on the website.</source>
+        <target>Votre email n'apparaitra pas sur le site.</target>
+      </trans-unit>
+      <trans-unit id="EoS04pC" resname="Let's post it !">
+        <source>Let's post it !</source>
+        <target>Poster !</target>
+      </trans-unit>
+      <trans-unit id="JsrrLpD" resname="Newsletter: Stayin' in touch">
+        <source>Stayin' in touch</source>
+        <target>Newsletter : Restons en contact</target>
+      </trans-unit>
+      <trans-unit id="adnc5vr" resname="You found the content interesting and want to stay in touch ?">
+        <source>You found the content interesting and want to stay in touch ?</source>
+        <target>Vous voulez rester en contact ?</target>
+      </trans-unit>
+      <trans-unit id="3hRNOlC" resname="I subscribe !">
+        <source>I subscribe !</source>
+        <target>Je m'inscris !</target>
+      </trans-unit>
+      <trans-unit id="JP.te9I" resname="Contact me">
+        <source>Contact me</source>
+        <target>Me contacter</target>
+      </trans-unit>
+      <trans-unit id="qxw2_Z7" resname="You can reach me by filling up this form and I'll answer within 48 hours.">
+        <source>You can reach me by filling up this form and I'll answer within 48 hours.</source>
+        <target>Vous pouvez me contacter en remplissant ce formulaire. Réponse sous 48h.</target>
+      </trans-unit>
+      <trans-unit id="B1idx07" resname="Send !">
+        <source>Send !</source>
+        <target>Envoyer !</target>
+      </trans-unit>
+      <trans-unit id="uNMehSc" resname="on">
+        <source>on</source>
+        <target>le</target>
+      </trans-unit>
+      <trans-unit id="wlP0Ub3" resname="Reply">
+        <source>Reply</source>
+        <target>Répondre</target>
+      </trans-unit>
+      <trans-unit id="3G7EUX2" resname="Read more...">
+        <source>Read more...</source>
+        <target>Lire la suite...</target>
+      </trans-unit>
+      <trans-unit id="GqGvTo0" resname="header.catch">
+        <source>header.catch</source>
+        <target><![CDATA[
+            Découvertes,<br />
+            Pensées,<br />
+            Code.
+        ]]></target>
+      </trans-unit>
+      <trans-unit id="Your name" resname="Your name">
+        <source>Your name</source>
+        <target>Votre nom</target>
+      </trans-unit>
+      <trans-unit id="Your email" resname="Your email">
+        <source>Your email</source>
+        <target>Votre email</target>
+      </trans-unit>
+      <trans-unit id="Your comment" resname="Your comment">
+        <source>Your email</source>
+        <target>Votre commentaire</target>
+      </trans-unit>
+      <trans-unit id="Reply to" resname="Reply to">
+        <source>Reply to</source>
+        <target>Répondre à</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

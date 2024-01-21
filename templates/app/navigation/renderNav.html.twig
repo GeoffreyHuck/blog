@@ -2,9 +2,7 @@
     <div class="ban header">
         <div class="header-content">
             <div class="catch">
-                Learn,<br />
-                Think,<br />
-                Compute.
+                {{ 'header.catch' | trans | raw }}
             </div>
             <a class="site-name" href="{{ path('homepage', { _locale: app.request.locale }) }}">Geoffrey Huck</a>
             <ul class="languages">

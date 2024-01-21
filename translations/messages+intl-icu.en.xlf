@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="vko3pnY" resname="All rights reserved">
+        <source>All rights reserved</source>
+        <target>All rights reserved</target>
+      </trans-unit>
+      <trans-unit id="bCwLjjP" resname="homepage.title">
+        <source>homepage.title</source>
+        <target>Geoffrey Huck - Learn, think, compute</target>
+      </trans-unit>
+      <trans-unit id="EtocFRq" resname="homepage.h1">
+        <source>homepage.h1</source>
+        <target>Journey into the wonders of computing</target>
+      </trans-unit>
+      <trans-unit id="IbGqFRy" resname="Published on">
+        <source>Published on</source>
+        <target>Published on</target>
+      </trans-unit>
+      <trans-unit id="h16XilN" resname="Leave a comment">
+        <source>Leave a comment</source>
+        <target>Leave a comment</target>
+      </trans-unit>
+      <trans-unit id="G4w4IXG" resname="Your email will not appear on the website.">
+        <source>Your email will not appear on the website.</source>
+        <target>Your email will not appear on the website.</target>
+      </trans-unit>
+      <trans-unit id="EoS04pC" resname="Let's post it !">
+        <source>Let's post it !</source>
+        <target>Let's post it !</target>
+      </trans-unit>
+      <trans-unit id="JsrrLpD" resname="Newsletter: Stayin' in touch">
+        <source>Newsletter: Stayin' in touch</source>
+        <target>Newsletter: Stayin' in touch</target>
+      </trans-unit>
+      <trans-unit id="adnc5vr" resname="You found the content interesting and want to stay in touch ?">
+        <source>You found the content interesting and want to stay in touch ?</source>
+        <target>You found the content interesting and want to stay in touch ?</target>
+      </trans-unit>
+      <trans-unit id="3hRNOlC" resname="I subscribe !">
+        <source>I subscribe !</source>
+        <target>I subscribe !</target>
+      </trans-unit>
+      <trans-unit id="JP.te9I" resname="Contact me">
+        <source>Contact me</source>
+        <target>Contact me</target>
+      </trans-unit>
+      <trans-unit id="qxw2_Z7" resname="You can reach me by filling up this form and I'll answer within 48 hours.">
+        <source>You can reach me by filling up this form and I'll answer within 48 hours.</source>
+        <target>You can reach me by filling up this form and I'll answer within 48 hours.</target>
+      </trans-unit>
+      <trans-unit id="B1idx07" resname="Send !">
+        <source>Send !</source>
+        <target>Send !</target>
+      </trans-unit>
+      <trans-unit id="uNMehSc" resname="on">
+        <source>on</source>
+        <target>on</target>
+      </trans-unit>
+      <trans-unit id="wlP0Ub3" resname="Reply">
+        <source>Reply</source>
+        <target>Reply</target>
+      </trans-unit>
+      <trans-unit id="3G7EUX2" resname="Read more...">
+        <source>Read more...</source>
+        <target>Read more...</target>
+      </trans-unit>
+      <trans-unit id="GqGvTo0" resname="header.catch">
+        <source>header.catch</source>
+        <target><![CDATA[
+            Learn,<br />
+            Think,<br />
+            Compute.
+        ]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

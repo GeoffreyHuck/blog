@@ -28,11 +28,11 @@
                 </form>
             </div>
         {% endif %}
-        <span class="author">{{ comment.author }}</span> on {{ comment.createdAt | date('d/m/Y H:i:s') }} :
+        <span class="author">{{ comment.author }}</span> {% trans %}on{% endtrans %} {{ comment.createdAt | date('d/m/Y H:i:s') }} :
         <br /><br />
         {{ comment.content | nl2br }}
         <br /><br />
-        <a href="#comment" data-replyTo="{{ comment.author }} on {{ comment.createdAt | date('d/m/Y H:i:s') }}" class="reply-link">Reply</a>
+        <a href="#comment" data-replyTo="{{ comment.author }} on {{ comment.createdAt | date('d/m/Y H:i:s') }}" class="reply-link">{% trans %}Reply{% endtrans %}</a>
 
         {% if comment.children | length %}
             <br /><br />
@@ -62,7 +62,7 @@
 
             <h1>{{ article.title }}</h1>
             {% if article.themes | length > 0 and article.publishedAt %}
-                Published on {{ article.publishedAt | date('d/m/Y') }}
+                {% trans %}Published on{% endtrans%} {{ article.publishedAt | date('d/m/Y') }}
             {% endif %}
 
             <hr />
@@ -91,9 +91,9 @@
         <hr />
         <div class="container" id="comment">
             <div class="centered">
-                <h2>Leave a comment</h2>
+                <h2>{% trans %}Leave a comment{% endtrans %}</h2>
 
-                <p>Your email will not appear on the website.</p>
+                <p>{% trans %}Your email will not appear on the website.{% endtrans %}</p>
 
                 <form method="post" action="#comment" novalidate>
                     {{ form_errors(formComment) }}
@@ -108,7 +108,7 @@
                     {{ form_rest(formComment) }}
 
                     <button class="btn" type="submit">
-                        Let's post it !
+                        {% trans %}Let's post it !{% endtrans %}
                     </button>
                 </form>
             </div>
@@ -119,10 +119,10 @@
         <hr />
         <div class="container" id="stay-in-touch">
             <div class="centered">
-                <h2>Stayin' in touch</h2>
+                <h2>{% trans %}Newsletter: Stayin' in touch{% endtrans %}</h2>
 
                 <div class="stay-in-touch">
-                    <p>You found the content interesting and want to stay in touch ?</p>
+                    <p>{% trans %}You found the content interesting and want to stay in touch ?{% endtrans %}</p>
                     <form method="post" action="#stay-in-touch">
                         {{ form_errors(formSubscription) }}
 
@@ -132,7 +132,7 @@
                         {{ form_rest(formSubscription) }}
 
                         <button class="btn" type="submit">
-                            I subscribe !
+                            {% trans %}I subscribe !{% endtrans %}
                         </button>
                     </form>
                 </div>
@@ -144,10 +144,10 @@
         <hr />
         <div class="container" id="contact">
             <div class="centered">
-                <h2>Contact me</h2>
+                <h2>{% trans %}Contact me{% endtrans %}</h2>
 
                 <div class="contact">
-                    <p>You can reach me by filling up this form and I'll answer within 48 hours.</p>
+                    <p>{% trans %}You can reach me by filling up this form and I'll answer within 48 hours.{% endtrans %}</p>
                     <form method="post" action="#contact">
                         {{ form_errors(formContact) }}
 
@@ -159,7 +159,7 @@
                         {{ form_rest(formContact) }}
 
                         <button class="btn" type="submit">
-                            Send !
+                            {% trans %}Send !{% endtrans %}
                         </button>
                     </form>
                 </div>
