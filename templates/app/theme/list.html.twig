@@ -28,6 +28,12 @@
                 <a href="{{ path('theme_show', { url: theme.url }) }}">{{ theme.name }}</a>
             </h2>
             Language: {{ theme.language.name }}<br />
+            Theme page content:
+            {% if theme.pageArticle %}
+                <a href="{{ path('article_show', { url: theme.pageArticle.url, _locale: theme.pageArticle.language.code }) }}">{{ theme.pageArticle.title }}</a>
+            {% else %}
+                Not defined.
+            {% endif %}<br />
             Position menu: {{ theme.position }}
             <ul>
                 {% for article in theme.articles %}

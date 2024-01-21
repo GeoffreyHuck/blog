@@ -42,6 +42,11 @@ class Theme
      */
     private $language;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Article::class)
+     */
+    private $pageArticle;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -116,6 +121,18 @@ class Theme
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getPageArticle(): ?Article
+    {
+        return $this->pageArticle;
+    }
+
+    public function setPageArticle(?Article $pageArticle): self
+    {
+        $this->pageArticle = $pageArticle;
 
         return $this;
     }

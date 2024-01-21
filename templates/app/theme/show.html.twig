@@ -5,11 +5,31 @@
 
 {% block content %}
     <div class="container">
-        <h1>{{ theme.name }}</h1>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('theme_edit', { url: theme.url }) }}" class="btn float-right">
+                Edit theme
+            </a>
+        {% endif %}
+        <h1>{% if theme.pageArticle %}{{ theme.pageArticle.title }}{% else %}{{ theme.name }}{% endif %}</h1>
+
+        {% if theme.pageArticle %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('article_edit', { url: theme.pageArticle.url }) }}" class="btn float-right">
+                    Edit page article
+                </a>
+            {% endif %}
+            {{ theme.pageArticle.content | raw }}
+            <br /><br />
+        {% endif %}
 
         {% for article in articles %}
             <hr />
 
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
+                    Edit article
+                </a>
+            {% endif %}
             <h2>
                 <a href="{{ path('article_show', { url: article.url }) }}">
                     {{ article.title }}
