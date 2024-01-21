@@ -20,20 +20,20 @@
 
             <div class="article-preview {% if not article.publishedAt %}unpublished{% endif %}">
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">
+                    <a href="{{ path('article_edit', { url: article.url, _locale: article.language.code }) }}" class="btn float-right">
                         Edit article
                     </a>
                 {% endif %}
 
                 <h2>
-                    <a href="{{ path('article_show', { url: article.url }) }}">{{ article.title }}</a>
+                    <a href="{{ path('article_show', { url: article.url, _locale: article.language.code }) }}">{{ article.title }}</a>
                 </h2>
                 <span>{% trans %}Published on{% endtrans%} {{ article.publishedAt | date('d/m/Y') }}</span>
                 <br /><br />
 
                 {{ article.preview | raw }}
                 <p>
-                    <a href="{{ path('article_show', { url: article.url }) }}">{% trans %}Read more...{% endtrans %}</a>
+                    <a href="{{ path('article_show', { url: article.url, _locale: article.language.code }) }}">{% trans %}Read more...{% endtrans %}</a>
                 </p>
             </div>
         {% endfor %}
