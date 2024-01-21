@@ -15,7 +15,7 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('publishedAt', null, [
-            'label' => 'Published At (nothing is Unpublished)',
+            'label' => 'Published At (leave blank if you don\'t want to publish it now)',
             'attr' => [
                 'class' => 'date-field'
             ]

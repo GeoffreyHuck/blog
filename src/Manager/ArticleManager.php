@@ -2,7 +2,6 @@
 namespace App\Manager;
 
 use App\Entity\Article;
-use App\Entity\Language;
 use App\Service\Watermark;
 use App\Utils\HtmlHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,26 +38,14 @@ class ArticleManager
     }
 
     /**
-     * Load an article.
+     * Synchronizes an article from the disk.
      *
-     * @param Article $article   The article.
-     *
+     * @param Article $article The article.
      * @throws Exception
      */
-    private function load(Article $article): void
+    public function synchronize(Article $article): void
     {
-        if (!$article->getUrl()) {
-            $article->setUrl($article->getDirectory());
-        }
-        if (!$article->getTitle()) {
-            $article->setTitle($article->getDirectory());
-        }
-
-        if (!$article->getPublishedAt()) {
-            $article->setPublishedAt(null);
-        }
-
-        $content = $this->getHtmlContent($article->getDirectory());
+        $content = $this->getHtmlContent($article);
         $article->setContent($content);
 
         $preview = $this->generatePreview($content);
@@ -75,31 +62,17 @@ class ArticleManager
             $article->setCoverHeight(null);
         }
 
-        if (!$article->getLanguage()) {
-            $languageRepo = $this->em->getRepository(Language::class);
-            $language = $languageRepo->findOneBy([
-                'code' => 'en',
-            ]);
-            $article->setLanguage($language);
-        }
-    }
-
-    /**
-     * Synchronizes an article from the disk.
-     *
-     * @param Article $article The article.
-     * @throws Exception
-     */
-    public function synchronize(Article $article): void
-    {
-        $this->load($article);
-
         $this->em->persist($article);
         $this->em->flush();
     }
 
     /**
      * Build an article.
+     * Generates the html content from the asciidoc content.
+     * Copies the resources into the public directory.
+     * Resizes the mathematical formulas.
+     * Adds a watermark on the images.
+     * Optimizes the images.
      *
      * @param Article $article The article.
      *
@@ -108,6 +81,9 @@ class ArticleManager
     public function build(Article $article): void
     {
         $articlePath = $this->articleBasePath . $article->getDirectory();
+        if (!file_exists($articlePath)) {
+            mkdir($articlePath, 0755);
+        }
 
         // Put the asciidoc content into a file.
         $adocPath = $articlePath . '/index.adoc';
@@ -219,21 +195,6 @@ class ArticleManager
     }
 
     /**
-     * Get all article names.
-     *
-     * @return string[]
-     */
-    public function getAllDirectoryNames(): array
-    {
-        $files = glob($this->articleBasePath . '*' , GLOB_ONLYDIR);
-        $files = array_map(function(string $file) {
-            return basename($file);
-        }, $files);
-
-        return $files;
-    }
-
-    /**
      * Generate a preview of an article content.
      *
      * @param string $content The article content.
@@ -260,14 +221,14 @@ class ArticleManager
     /**
      * Gets the content of an article.
      *
-     * @param string $name The article name.
+     * @param Article $article The article.
      *
      * @return string
      * @throws Exception
      */
-    private function getHtmlContent(string $name): string
+    private function getHtmlContent(Article $article): string
     {
-        $path = $this->articleBasePath . $name . '/index.html';
+        $path = $this->articleBasePath . $article->getDirectory() . '/index.html';
 
         try {
             $content = file_get_contents($path);
@@ -275,7 +236,7 @@ class ArticleManager
             $content = false;
         }
         if (!$content) {
-            throw new Exception($path . ' doesn\'t exist or is empty. Did you build this article ?');
+            throw new Exception($path . ' does\'t exist or is empty. Did you build this article ?');
         }
 
         return $content;

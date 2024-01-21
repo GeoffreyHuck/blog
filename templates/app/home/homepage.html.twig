@@ -5,6 +5,11 @@
 
 {% block content %}
     <div class="container">
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('article_new') }}" class="btn float-right">
+                Write a new article
+            </a>
+        {% endif %}
         <h1>{% trans %}homepage.h1{% endtrans %}</h1>
 
         {% for article in articles %}

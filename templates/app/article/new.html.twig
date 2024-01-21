@@ -1,0 +1,41 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}New article - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('article_new') }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>New article</h1>
+
+        <form method="post" novalidate>
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.url) }}
+            {{ form_row(form.language) }}
+            {{ form_row(form.publishedAt) }}
+            <br /><br />
+
+            {{ form_row(form.rawContent) }}
+
+            <br /><br />
+            <fieldset>
+                <legend>Themes</legend>
+                {{ form_row(form.themes) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Put in the main menu</legend>
+                {{ form_row(form.inMainMenu) }}
+                {{ form_row(form.mainMenuTitle) }}
+                {{ form_row(form.position) }}
+            </fieldset>
+
+            {{ form_rest(form) }}
+
+            <button class="btn" type="submit">
+                Create this article!
+            </button>
+        </form>
+    </div>
+{% endblock %}

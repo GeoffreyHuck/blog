@@ -21,6 +21,51 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
+     * @Route("/new", name="article_new")
+     * @Security("is_granted('ROLE_SUPER_ADMIN')")
+     *
+     * @param Request        $request        The request.
+     * @param ArticleManager $articleManager The article manager.
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function newAction(Request $request, ArticleManager $articleManager): Response
+    {
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                /**
+                 * The directory in which we build the article.
+                 * We set it as the first url.
+                 * This way, if the url changes, the directory will not change.
+                 */
+                $article->setDirectory($article->getUrl());
+
+                $articleManager->build($article);
+                $articleManager->synchronize($article);
+
+                $em = $this->getDoctrine()->getManager();
+
+                $em->persist($article);
+                $em->flush();
+
+                $this->addFlash('success', 'The article has been edited.');
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
+
+        return $this->render('app/article/new.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article,
+        ]);
+    }
+
+    /**
      * @Route("/edit/{url}", name="article_edit")
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
@@ -160,12 +205,11 @@ class ArticleController extends AbstractController
      * @Route("/delete/{url}", name="article_delete", methods={"POST"})
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
-     * @param Request $request The request.
      * @param Article $article The article.
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Article $article): Response
+    public function deleteAction(Article $article): Response
     {
         $em = $this->getDoctrine()->getManager();
 
