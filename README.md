@@ -24,7 +24,6 @@ It is based upon the [Symfony Framework](https://github.com/symfony/symfony) and
 
 ### Install asciidoctor, asciidoctor-diagram and asciidoctor-mathematical :
 
-
     sudo apt install -y asciidoctor
     sudo gem install asciidoctor-diagram
     sudo apt install -y gnuplot
@@ -53,6 +52,12 @@ Copy the *.env* file into *.env.local* and fill up the configuration. For produc
     APP_SECRET=you_have_to_modify_this
 
 You can get a free [Akismet key](https://akismet.com/signup/) to fight against spam.
+
+### Set permissions
+
+    HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1)
+    sudo chown -R $HTTPDUSER:$HTTPDUSER articles
+    sudo chmod -R 755 articles
 
 ## Writing
 
