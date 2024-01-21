@@ -56,17 +56,8 @@ You can get a free [Akismet key](https://akismet.com/signup/) to fight against s
 
 ## Writing
 
-To write an article, create a new directory inside the articles/ directory.
-
-- `index.adoc` is the content is ASCII-Doc format.
-- `cover.JPG` is the cover image.
-- `otherimage.JPG` any other image you use in your article. The extension must be in uppercase.
-
-To build a document, which means creating the html and preparing the files, type the following command :
-
-    symfony console app:build-article
-
-Then synchronize the articles by login in `/login` and clicking on the `Synchronize articles` button.
+To write an article, create a new article after login as an admin. The format is AsciiDoc.
+The article will be built on save, and the images will be optimized automatically.
 
 ## Tests
 

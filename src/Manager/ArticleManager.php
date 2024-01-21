@@ -41,33 +41,30 @@ class ArticleManager
     /**
      * Load an article.
      *
-     * @param string  $directory The article directory.
      * @param Article $article   The article.
      *
      * @throws Exception
      */
-    private function load(string $directory, Article $article): void
+    private function load(Article $article): void
     {
-        $article->setDirectory($directory);
-
         if (!$article->getUrl()) {
-            $article->setUrl($directory);
+            $article->setUrl($article->getDirectory());
         }
         if (!$article->getTitle()) {
-            $article->setTitle($directory);
+            $article->setTitle($article->getDirectory());
         }
 
         if (!$article->getPublishedAt()) {
             $article->setPublishedAt(null);
         }
 
-        $content = $this->getHtmlContent($directory);
+        $content = $this->getHtmlContent($article->getDirectory());
         $article->setContent($content);
 
         $preview = $this->generatePreview($content);
         $article->setPreview($preview);
 
-        $coverFilePath = $this->publicArticleBasePath . $directory . '/cover.JPG';
+        $coverFilePath = $this->publicArticleBasePath . $article->getUrl() . '/cover.JPG';
         if (file_exists($coverFilePath)) {
             $image = new Imagick($coverFilePath);
 
@@ -88,62 +85,17 @@ class ArticleManager
     }
 
     /**
-     * Synchronizes all articles from disk.
-     *
-     * @throws Exception
-     */
-    public function synchronizeAll(): void
-    {
-
-        $directoryNames = $this->getAllDirectoryNames();
-        foreach ($directoryNames as $directoryName) {
-            $this->synchronize($directoryName);
-        }
-    }
-
-    /**
      * Synchronizes an article from the disk.
      *
-     * @param string $directory The directory.
+     * @param Article $article The article.
      * @throws Exception
      */
-    public function synchronize(string $directory): void
+    public function synchronize(Article $article): void
     {
-        $articleRepo = $this->em->getRepository(Article::class);
-
-        $article = $articleRepo->findOneBy([
-            'directory' => $directory,
-        ]);
-        if (!$article) {
-            $article = new Article();
-        }
-
-        $this->load($directory, $article);
+        $this->load($article);
 
         $this->em->persist($article);
         $this->em->flush();
-    }
-
-    /**
-     * Validates the source of an article.
-     *
-     * @param string $name The article name.
-     *
-     * @return bool Return true or throws an exception.
-     * @throws Exception
-     */
-    public function validateSource(string $name): bool
-    {
-        if (!preg_match('#^[a-zA-Z0-9-_ ]+$#', $name)) {
-            throw new Exception('The name (hence the url) must be formed only of letters, numbers, -, _ or spaces');
-        }
-
-        $adocPath = $this->articleBasePath . $name . '/index.adoc';
-        if (!file_exists($adocPath)) {
-            throw new Exception($adocPath . ' doesn\'t exist or is empty.');
-        }
-
-        return true;
     }
 
     /**
@@ -155,7 +107,7 @@ class ArticleManager
      */
     public function build(Article $article): void
     {
-        $articlePath = $this->articleBasePath . $article->getUrl();
+        $articlePath = $this->articleBasePath . $article->getDirectory();
 
         // Put the asciidoc content into a file.
         $adocPath = $articlePath . '/index.adoc';
@@ -167,7 +119,7 @@ class ArticleManager
             '-r asciidoctor-diagram ' .
             '-a mathematical-ppi=' . (72 * self::MATHEMATICAL_FONT_SIZE_RATIO) . ' ' .
             '-a outdir=articles ' .
-            '-a imagesdir=' . $article->getUrl() . ' ' .
+            '-a imagesdir=' . $article->getDirectory() . ' ' .
             '-s ' . $adocPath;
 
         shell_exec($cmd);
@@ -214,11 +166,11 @@ class ArticleManager
         $inDirFiles = scandir($articlePath);
         $files = [];
         foreach ($inDirFiles as $inDirFile) {
-            $files[] = $this->articleBasePath . $article->getUrl() . '/' . $inDirFile;
+            $files[] = $this->articleBasePath . $article->getDirectory() . '/' . $inDirFile;
         }
 
         // Math formulas are generated in a subdir of the same name.
-        $articleMathSubDir = $articlePath . '/' . $article->getUrl();
+        $articleMathSubDir = $articlePath . '/' . $article->getDirectory();
         if (file_exists($articleMathSubDir)) {
             $inSubDirFiles = scandir($articleMathSubDir);
             foreach ($inSubDirFiles as $inSubDirFile) {

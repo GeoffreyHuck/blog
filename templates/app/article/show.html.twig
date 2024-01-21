@@ -45,14 +45,6 @@
 
 {% block content %}
     <div class="container">
-        {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <form method="post" action="{{ path('article_sync') }}" class="float-right">
-                <button type="submit" class="btn">
-                    Synchronize articles
-                </button>
-            </form>
-        {% endif %}
-
         <article class="{% if not article.publishedAt %}unpublished{% endif %}">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a href="{{ path('article_edit', { url: article.url }) }}" class="btn float-right">

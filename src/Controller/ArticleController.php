@@ -21,24 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/sync", name="article_sync")
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
-     * @param ArticleManager $articleManager The article manager.
-     *
-     * @return Response
-     * @throws Exception
-     */
-    public function syncAction(ArticleManager $articleManager): Response
-    {
-        $articleManager->synchronizeAll();
-
-        $this->addFlash('success', 'The articles have been synchronized.');
-
-        return $this->redirectToRoute('homepage');
-    }
-
-    /**
      * @Route("/edit/{url}", name="article_edit")
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
@@ -53,14 +35,11 @@ class ArticleController extends AbstractController
     {
         $form = $this->createForm(ArticleType::class, $article);
 
-        $oldRawContent = $article->getRawContent();
-
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                //if ($oldRawContent != $article->getRawContent()) {
-                    $articleManager->build($article);
-//                }
+                $articleManager->build($article);
+                $articleManager->synchronize($article);
 
                 $em = $this->getDoctrine()->getManager();
 
