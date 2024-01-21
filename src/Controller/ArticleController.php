@@ -111,7 +111,7 @@ class ArticleController extends AbstractController
                 return $this->redirect($request->getRequestUri());
             }
         }
-        if ($article->getUrl() == 'about-me') {
+        if ($article->getUrl() == 'about-me' || $article->getUrl() == 'consultant-developpeur-informatique') {
             if ($contactHandler->processRequest($request)) {
                 return $this->redirect($request->getRequestUri());
             }
