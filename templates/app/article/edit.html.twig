@@ -25,6 +25,11 @@
             {{ form_row(form.publishedAt) }}
             <br /><br />
 
+            <a class="btn float-right" href="{{ path('media_article_new', { url: article.url }) }}" target="_blank">
+                Upload media
+            </a>
+            <div class="clearfix"></div>
+
             {{ form_row(form.rawContent) }}
 
             <br /><br />

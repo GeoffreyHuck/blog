@@ -1,0 +1,27 @@
+{% extends 'app/base.html.twig' %}
+
+{% block title %}New media for article {{ article.title}} - Geoffrey Huck{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ site_url }}{{ path('media_article_new', { url: article.url }) }}" />{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <a href="{{ path('article_show', { url: article.url, _locale: article.language.code }) }}" class="btn float-right">
+            Back to the article
+        </a>
+
+        <h1>Add new media for article {{ article.title }}</h1>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.file) }}
+
+            {{ form_rest(form) }}
+
+            <button class="btn" type="submit">
+                Upload the new media!
+            </button>
+        </form>
+    </div>
+{% endblock %}

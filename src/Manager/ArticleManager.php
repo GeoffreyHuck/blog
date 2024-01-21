@@ -38,6 +38,16 @@ class ArticleManager
     }
 
     /**
+     * Gets the article base path.
+     *
+     * @return string
+     */
+    public function getArticleBasePath(): string
+    {
+        return $this->articleBasePath;
+    }
+
+    /**
      * Synchronizes an article from the disk.
      *
      * @param Article $article The article.
