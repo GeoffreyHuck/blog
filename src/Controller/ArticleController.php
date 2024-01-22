@@ -106,21 +106,23 @@ class ArticleController extends AbstractController
     /**
      * Generates the preview of an article.
      *
-     * @Route("/generate_preview", name="article_generate_preview")
+     * @Route("/generate_preview/{url}", name="article_generate_preview")
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
      * @param Request        $request        The request.
+     * @param Article        $article        The article.
      * @param ArticleManager $articleManager The article manager.
      *
      * @return Response
      * @throws Exception
      */
-    public function generatePreviewAction(Request $request, ArticleManager $articleManager): Response
+    public function generatePreviewAction(Request $request, Article $article, ArticleManager $articleManager): Response
     {
         $testDirectory = 'test_preview';
 
         $rawContent = $request->query->get('rawContent', '');
 
+        $articleManager->copyMediaToTestDirectory($article->getDirectory(), $testDirectory);
         $articleManager->build($testDirectory, $testDirectory, $rawContent);
         $html = $articleManager->getHtmlContent($testDirectory);
 

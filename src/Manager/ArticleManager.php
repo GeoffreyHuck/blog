@@ -253,4 +253,36 @@ class ArticleManager
 
         return $content;
     }
+
+    /**
+     * Copy the media of an article to the test directory.
+     *
+     * @param string $sourceDirectory The source directory.
+     * @param string $testDirectory   The test directory.
+     *
+     * @return void
+     */
+    public function copyMediaToTestDirectory(string $sourceDirectory, string $testDirectory): void
+    {
+        $sourcePath = $this->articleBasePath . $sourceDirectory;
+        $testPath = $this->articleBasePath . $testDirectory;
+
+        if (!file_exists($testPath)) {
+            mkdir($testPath, 0755, true);
+        }
+
+        $files = scandir($sourcePath);
+        foreach ($files as $file) {
+            if ($file == 'index.adoc' || $file == 'index.html') {
+                continue;
+            }
+
+            $sourceFilePath = $sourcePath . '/' . $file;
+            $testFilePath = $testPath . '/' . $file;
+
+            if (is_file($sourceFilePath)) {
+                copy($sourceFilePath, $testFilePath);
+            }
+        }
+    }
 }
