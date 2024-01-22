@@ -140,7 +140,7 @@ class ArticleManager
         // Copy the resources into public directory.
         $publicArticleDirectory = $this->publicArticleBasePath . $publicDirectory;
         if (!file_exists($publicArticleDirectory)) {
-            mkdir($publicArticleDirectory, 0777, true);
+            mkdir($publicArticleDirectory, 0755, true);
         }
 
         /**
