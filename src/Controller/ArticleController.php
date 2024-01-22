@@ -45,7 +45,7 @@ class ArticleController extends AbstractController
                  */
                 $article->setDirectory($article->getUrl());
 
-                $articleManager->build($article);
+                $articleManager->build($article->getDirectory(), $article->getUrl(), $article->getRawContent());
                 $articleManager->synchronize($article);
 
                 $em = $this->getDoctrine()->getManager();
@@ -83,7 +83,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $articleManager->build($article);
+                $articleManager->build($article->getDirectory(), $article->getUrl(), $article->getRawContent());
                 $articleManager->synchronize($article);
 
                 $em = $this->getDoctrine()->getManager();
@@ -117,12 +117,14 @@ class ArticleController extends AbstractController
      */
     public function generatePreviewAction(Request $request, ArticleManager $articleManager): Response
     {
+        $testDirectory = 'test_preview';
+
         $rawContent = $request->query->get('rawContent', '');
 
-//        $articleManager->build($article);
-//        $articleManager->synchronize($article);
+        $articleManager->build($testDirectory, $testDirectory, $rawContent);
+        $html = $articleManager->getHtmlContent($testDirectory);
 
-        return new Response($rawContent);
+        return new Response($html);
     }
 
     /**

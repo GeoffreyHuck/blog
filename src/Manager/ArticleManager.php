@@ -55,7 +55,7 @@ class ArticleManager
      */
     public function synchronize(Article $article): void
     {
-        $content = $this->getHtmlContent($article);
+        $content = $this->getHtmlContent($article->getDirectory());
         $article->setContent($content);
 
         $preview = $this->generatePreview($content);
@@ -84,20 +84,22 @@ class ArticleManager
      * Adds a watermark on the images.
      * Optimizes the images.
      *
-     * @param Article $article The article.
+     * @param string $sourceDirectory The source directory.
+     * @param string $publicDirectory The public directory.
+     * @param string $asciiDoc        The asciidoc content.
      *
      * @throws Exception
      */
-    public function build(Article $article): void
+    public function build(string $sourceDirectory, string $publicDirectory, string $asciiDoc): void
     {
-        $articlePath = $this->articleBasePath . $article->getDirectory();
+        $articlePath = $this->articleBasePath . $sourceDirectory;
         if (!file_exists($articlePath)) {
             mkdir($articlePath, 0755);
         }
 
         // Put the asciidoc content into a file.
         $adocPath = $articlePath . '/index.adoc';
-        file_put_contents($adocPath, $article->getRawContent());
+        file_put_contents($adocPath, $asciiDoc);
 
         // Transform the adoc into html.
         $cmd = 'asciidoctor ' .
@@ -105,7 +107,7 @@ class ArticleManager
             '-r asciidoctor-diagram ' .
             '-a mathematical-ppi=' . (72 * self::MATHEMATICAL_FONT_SIZE_RATIO) . ' ' .
             '-a outdir=articles ' .
-            '-a imagesdir=' . $article->getDirectory() . ' ' .
+            '-a imagesdir=' . $sourceDirectory . ' ' .
             '-s ' . $adocPath;
 
         shell_exec($cmd);
@@ -136,7 +138,7 @@ class ArticleManager
         file_put_contents($htmlPath, $htmlContent);
 
         // Copy the resources into public directory.
-        $publicArticleDirectory = $this->publicArticleBasePath . $article->getUrl();
+        $publicArticleDirectory = $this->publicArticleBasePath . $publicDirectory;
         if (!file_exists($publicArticleDirectory)) {
             mkdir($publicArticleDirectory, 0777, true);
         }
@@ -152,11 +154,11 @@ class ArticleManager
         $inDirFiles = scandir($articlePath);
         $files = [];
         foreach ($inDirFiles as $inDirFile) {
-            $files[] = $this->articleBasePath . $article->getDirectory() . '/' . $inDirFile;
+            $files[] = $this->articleBasePath . $sourceDirectory . '/' . $inDirFile;
         }
 
         // Math formulas are generated in a subdir of the same name.
-        $articleMathSubDir = $articlePath . '/' . $article->getDirectory();
+        $articleMathSubDir = $articlePath . '/' . $sourceDirectory;
         if (file_exists($articleMathSubDir)) {
             $inSubDirFiles = scandir($articleMathSubDir);
             foreach ($inSubDirFiles as $inSubDirFile) {
@@ -231,14 +233,14 @@ class ArticleManager
     /**
      * Gets the content of an article.
      *
-     * @param Article $article The article.
+     * @param string $sourceDirectory The source directory.
      *
      * @return string
      * @throws Exception
      */
-    private function getHtmlContent(Article $article): string
+    public function getHtmlContent(string $sourceDirectory): string
     {
-        $path = $this->articleBasePath . $article->getDirectory() . '/index.html';
+        $path = $this->articleBasePath . $sourceDirectory . '/index.html';
 
         try {
             $content = file_get_contents($path);
