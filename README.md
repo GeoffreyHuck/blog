@@ -58,6 +58,8 @@ You can get a free [Akismet key](https://akismet.com/signup/) to fight against s
     HTTPDUSER=$(ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1)
     sudo chown -R $HTTPDUSER:$HTTPDUSER articles
     sudo chmod -R 755 articles
+    sudo chown -R $HTTPDUSER:$HTTPDUSER public/articles
+    sudo chmod -R 755 public/articles
 
 ## Writing
 
