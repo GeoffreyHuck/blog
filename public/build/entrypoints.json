@@ -2,22 +2,23 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/build/runtime.ee69147a.js",
-        "/build/739.5ea642af.js",
-        "/build/app.b445580e.js"
+        "/build/runtime.js",
+        "/build/vendors-node_modules_core-js_internals_array-iteration_js-node_modules_core-js_internals_arra-85effc.js",
+        "/build/app.js"
       ],
       "css": [
-        "/build/app.a24a9a3f.css"
+        "/build/app.css"
       ]
     },
     "admin": {
       "js": [
-        "/build/runtime.ee69147a.js",
-        "/build/739.5ea642af.js",
-        "/build/admin.81464bd5.js"
+        "/build/runtime.js",
+        "/build/vendors-node_modules_core-js_internals_array-iteration_js-node_modules_core-js_internals_arra-85effc.js",
+        "/build/vendors-node_modules_core-js_modules_es_promise_js-node_modules_core-js_modules_es_symbol_des-88362d.js",
+        "/build/admin.js"
       ],
       "css": [
-        "/build/admin.3429f13d.css"
+        "/build/admin.css"
       ]
     }
   }

@@ -30,7 +30,13 @@
             </a>
             <div class="clearfix"></div>
 
+            <iframe id="iframe_preview"></iframe>
             {{ form_row(form.rawContent) }}
+
+            <a class="btn" id="generate_preview" href="javascript:" data-href="{{ path('article_generate_preview', { url: article.url }) }}">
+                Generate preview!
+            </a>
+            <br /><br />
 
             <br /><br />
             <fieldset>

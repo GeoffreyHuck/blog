@@ -1,11 +1,18 @@
 {
-  "build/app.css": "/build/app.a24a9a3f.css",
-  "build/app.js": "/build/app.b445580e.js",
-  "build/admin.css": "/build/admin.3429f13d.css",
-  "build/admin.js": "/build/admin.81464bd5.js",
-  "build/runtime.js": "/build/runtime.ee69147a.js",
-  "build/739.5ea642af.js": "/build/739.5ea642af.js",
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/admin.css": "/build/admin.css",
+  "build/admin.js": "/build/admin.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_core-js_modules_es_object_define-property_js.js": "/build/vendors-node_modules_core-js_modules_es_object_define-property_js.js",
+  "build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-e1b191.js": "/build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-e1b191.js",
   "build/fonts/NotoSerif-Regular.woff": "/build/fonts/NotoSerif-Regular.fc620645.woff",
   "build/images/ban.jpg": "/build/images/ban.936c1eed.jpg",
-  "build/fonts/OpenSans-Light.woff": "/build/fonts/OpenSans-Light.c43b0492.woff"
+  "build/fonts/OpenSans-Light.woff": "/build/fonts/OpenSans-Light.c43b0492.woff",
+  "build/vendors-node_modules_core-js_internals_array-slice_js-node_modules_core-js_internals_check-co-1db39d.js": "/build/vendors-node_modules_core-js_internals_array-slice_js-node_modules_core-js_internals_check-co-1db39d.js",
+  "build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-519f82.js": "/build/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-519f82.js",
+  "build/vendors-node_modules_core-js_modules_es_promise_js.js": "/build/vendors-node_modules_core-js_modules_es_promise_js.js",
+  "build/vendors-node_modules_core-js_internals_array-iteration_js-node_modules_core-js_internals_arra-85effc.js": "/build/vendors-node_modules_core-js_internals_array-iteration_js-node_modules_core-js_internals_arra-85effc.js",
+  "build/vendors-node_modules_core-js_modules_es_promise_js-node_modules_core-js_modules_es_symbol_des-62f564.js": "/build/vendors-node_modules_core-js_modules_es_promise_js-node_modules_core-js_modules_es_symbol_des-62f564.js",
+  "build/vendors-node_modules_core-js_modules_es_promise_js-node_modules_core-js_modules_es_symbol_des-88362d.js": "/build/vendors-node_modules_core-js_modules_es_promise_js-node_modules_core-js_modules_es_symbol_des-88362d.js"
 }
