@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
     const generateButton = document.getElementById('generate_preview');
     if (generateButton) {
         generateButton.addEventListener('click', async () => {
-            const response = await fetch('/en/articles/generate_preview?' + new URLSearchParams({
+            const response = await fetch( generateButton.getAttribute('data-href') + '?' + new URLSearchParams({
                 'rawContent': (document.getElementById('article_rawContent') as HTMLTextAreaElement).value
             }), {
                 method: 'GET'
