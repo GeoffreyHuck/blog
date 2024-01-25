@@ -69,9 +69,9 @@ class ArticleController extends AbstractController
      * @Route("/edit/{url}", name="article_edit")
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
      *
-     * @param Request $request The request.
+     * @param Request        $request        The request.
      * @param ArticleManager $articleManager The article manager.
-     * @param Article $article The article.
+     * @param Article        $article        The article.
      *
      * @return Response
      * @throws Exception
