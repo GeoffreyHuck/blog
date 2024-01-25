@@ -25,6 +25,15 @@ class HomeControllerTest extends WebTestCase
         $em->flush();
     }
 
+    public function testIndexActionIsRedirected()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/');
+        $this->assertResponseStatusCodeSame(301);
+        $this->assertResponseHeaderSame('Location', '/en');
+    }
+
     public function testHomepageActionCanonical()
     {
         $client = static::createClient();
