@@ -1,7 +1,7 @@
 {% extends 'app/base.html.twig' %}
 
 {% block title %}{% trans %}homepage.title{% endtrans %}{% endblock %}
-{% block canonical %}<link rel="canonical" href="{{ site_url }}" />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ url('homepage') }}" />{% endblock %}
 
 {% block content %}
     <div class="container">
