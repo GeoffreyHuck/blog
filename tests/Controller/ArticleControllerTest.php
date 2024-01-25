@@ -43,6 +43,19 @@ class ArticleControllerTest extends WebTestCase
         $em->flush();
     }
 
+    public function testShowActionCanonical()
+    {
+        $client = static::createClient();
+        $this->setupDatabaseFixtures();
+
+        $client->request('GET', '/fr/articles/test');
+        $this->assertResponseIsSuccessful();
+
+        // Get the first link with rel="canonical".
+        $link = $client->getCrawler()->filter('link[rel="canonical"]')->first();
+        $this->assertEquals('http://localhost/fr/articles/test', $link->attr('href'));
+    }
+
     public function testShowActionMustBePublished()
     {
         $client = static::createClient();
